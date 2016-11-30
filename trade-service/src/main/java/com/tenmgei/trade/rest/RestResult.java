@@ -1,6 +1,11 @@
 package com.tenmgei.trade.rest;
 
 public class RestResult<T> {
+	public RestResult(T data) {
+		super();
+		this.data = data;
+	}
+
 	public RestResult(boolean success) {
 		super();
 		this.success = success;

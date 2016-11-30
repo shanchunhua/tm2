@@ -1,5 +1,7 @@
 package com.tenmgei.trade.repository;
 
+import java.util.Set;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -11,18 +13,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tenmgei.trade.domain.Store;
 import com.tenmgei.trade.domain.Supplier;
-import com.tenmgei.trade.domain.SupplierStatus;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
+@Transactional
 public class StoreRepositoryTest {
 	@Autowired
 	private StoreRepository storeRepository;
 	@Autowired
 	private SupplierRepository supplierRepository;
+
 	@Test
-	@Rollback(true)
 	public void testSave() {
 		Store entity = new Store();
 		entity.setName("測試");
@@ -32,26 +33,34 @@ public class StoreRepositoryTest {
 		entity.setContact("張三");
 		storeRepository.save(entity);
 	}
+
 	@Test
-	public void testUpdate(){
+	public void testUpdate() {
 		Store entity = storeRepository.findOne(1L);
 		entity.setName("updated");
 		storeRepository.save(entity);
 	}
-	
-	@Test 
-	@Transactional
+
+	@Test
+	public void testFindById() {
+		Store entity = storeRepository.findOne(1L);
+		Set<Supplier> suppliers=entity.getSuppliers();
+		for (Supplier supplier : suppliers) {
+			System.out.println(supplier.getName());
+		}
+	}
+
+	@Test
 	@Rollback(false)
-	public void testAddSuppliers(){
+	public void testAddSuppliers() {
 		Store entity = storeRepository.findOne(1L);
 		entity.getSuppliers().add(supplierRepository.findOne(2L));
 		storeRepository.save(entity);
 	}
-	
-	@Test 
-	@Transactional
+
+	@Test
 	@Rollback(false)
-	public void testDeleteSuppliers(){
+	public void testDeleteSuppliers() {
 		Store entity = storeRepository.findOne(1L);
 		entity.getSuppliers().remove(supplierRepository.findOne(1L));
 		storeRepository.save(entity);

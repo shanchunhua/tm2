@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ProductOrder extends BaseEntity {
 
-	private Integer amount;
+	private Integer quantity;
 	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
 	@Column(precision = 5, scale = 2)
@@ -24,12 +24,14 @@ public class ProductOrder extends BaseEntity {
 	private PaymentStatus paymentStatus = PaymentStatus.NOT_PAID;
 	private LogisticsStatus logisticsStatus = LogisticsStatus.UNFULFILLED;
 
-	public Integer getAmount() {
-		return amount;
+
+
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setAmount(Integer amount) {
-		this.amount = amount;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public BigDecimal getPrice() {
