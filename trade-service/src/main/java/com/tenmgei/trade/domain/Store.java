@@ -1,7 +1,13 @@
 package com.tenmgei.trade.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  * 店铺实体类
@@ -30,6 +36,10 @@ public class Store extends BaseEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private WechatUser user;
+	@ManyToMany(targetEntity = Supplier.class)
+	@JoinTable(name = "store_supplier", joinColumns = { @JoinColumn(name = "store_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "supplier_id") })
+	private List<Supplier> suppliers;
 
 	public WechatUser getUser() {
 		return user;
