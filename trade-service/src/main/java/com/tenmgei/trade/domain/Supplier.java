@@ -1,7 +1,13 @@
 package com.tenmgei.trade.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  * 发品商实体类
@@ -35,10 +41,20 @@ public class Supplier extends BaseEntity implements Serializable {
 	 * 联系人手机
 	 */
 	private String cellphone;
+	private SupplierStatus status = SupplierStatus.UNCERTFIED;
+	public Set<Store> getStores() {
+		return stores;
+	}
+
+	public void setStores(Set<Store> stores) {
+		this.stores = stores;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private WechatUser user;
+	@ManyToMany(mappedBy = "suppliers")
+	private Set<Store> stores = new HashSet<Store>();
 
 	public WechatUser getUser() {
 		return user;
@@ -104,5 +120,4 @@ public class Supplier extends BaseEntity implements Serializable {
 		this.status = status;
 	}
 
-	private SupplierStatus status = SupplierStatus.UNCERTFIED;
 }

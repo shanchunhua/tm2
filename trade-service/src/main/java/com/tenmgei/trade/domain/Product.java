@@ -2,11 +2,14 @@ package com.tenmgei.trade.domain;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+@Entity
 public class Product extends BaseEntity {
 	private String name;
+	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
 	@ManyToOne
 	@JoinColumn(name = "catalog_id")

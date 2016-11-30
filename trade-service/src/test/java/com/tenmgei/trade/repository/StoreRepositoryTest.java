@@ -1,5 +1,7 @@
 package com.tenmgei.trade.repository;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,8 @@ import com.tenmgei.trade.domain.SupplierStatus;
 public class StoreRepositoryTest {
 	@Autowired
 	private StoreRepository storeRepository;
-
+	@Autowired
+	private SupplierRepository supplierRepository;
 	@Test
 	@Rollback(true)
 	public void testSave() {
@@ -33,6 +36,24 @@ public class StoreRepositoryTest {
 	public void testUpdate(){
 		Store entity = storeRepository.findOne(1L);
 		entity.setName("updated");
+		storeRepository.save(entity);
+	}
+	
+	@Test 
+	@Transactional
+	@Rollback(false)
+	public void testAddSuppliers(){
+		Store entity = storeRepository.findOne(1L);
+		entity.getSuppliers().add(supplierRepository.findOne(2L));
+		storeRepository.save(entity);
+	}
+	
+	@Test 
+	@Transactional
+	@Rollback(false)
+	public void testDeleteSuppliers(){
+		Store entity = storeRepository.findOne(1L);
+		entity.getSuppliers().remove(supplierRepository.findOne(1L));
 		storeRepository.save(entity);
 	}
 }
