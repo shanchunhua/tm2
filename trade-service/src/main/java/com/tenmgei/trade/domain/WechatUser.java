@@ -11,24 +11,13 @@ import javax.persistence.*;
  */
 @Entity
 
-public class WechatUser implements Serializable {
+public class WechatUser extends BaseEntity implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	private String openid;
 	private static final long serialVersionUID = 1L;
 
 	public WechatUser() {
 		super();
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getOpenid() {
