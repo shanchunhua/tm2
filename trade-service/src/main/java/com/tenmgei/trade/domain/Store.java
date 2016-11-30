@@ -1,7 +1,8 @@
 package com.tenmgei.trade.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -39,7 +40,7 @@ public class Store extends BaseEntity implements Serializable {
 	@ManyToMany(targetEntity = Supplier.class)
 	@JoinTable(name = "store_supplier", joinColumns = { @JoinColumn(name = "store_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "supplier_id") })
-	private List<Supplier> suppliers;
+	private Set<Supplier> suppliers = new HashSet<Supplier>();
 
 	public WechatUser getUser() {
 		return user;
@@ -51,6 +52,16 @@ public class Store extends BaseEntity implements Serializable {
 
 	public String getName() {
 		return name;
+	}
+
+
+
+	public Set<Supplier> getSuppliers() {
+		return suppliers;
+	}
+
+	public void setSuppliers(Set<Supplier> suppliers) {
+		this.suppliers = suppliers;
 	}
 
 	public void setName(String name) {
