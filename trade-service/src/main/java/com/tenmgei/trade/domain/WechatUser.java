@@ -1,9 +1,8 @@
 package com.tenmgei.trade.domain;
 
 import java.io.Serializable;
-import java.lang.Long;
-import java.lang.String;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
 
 /**
  * Entity implementation class for Entity: WechatUser

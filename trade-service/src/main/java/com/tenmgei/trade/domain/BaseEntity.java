@@ -21,6 +21,36 @@ public abstract class BaseEntity {
 	@Column(insertable = false)
 	private Date modifiedTime;
 
+	@Column(name = "create_by")
+	private Long createBy;
+
+	@Column(name = "update_by")
+	private Long updateBy;
+
+	public Long getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(Long createBy) {
+		this.createBy = createBy;
+	}
+
+	public Long getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(Long updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 	@Version
 	private Long version;
 
