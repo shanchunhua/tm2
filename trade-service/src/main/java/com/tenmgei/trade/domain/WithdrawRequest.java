@@ -15,6 +15,16 @@ public class WithdrawRequest extends BaseEntity {
 	private BigDecimal amount;
 
 	private WithdrawRequestStatus status = WithdrawRequestStatus.NEW;
+	
+	private Supplier supplier;
+
+	public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
 
 	public WithdrawRequestStatus getStatus() {
 		return status;
