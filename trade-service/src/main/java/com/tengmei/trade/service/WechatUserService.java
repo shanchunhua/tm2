@@ -11,4 +11,6 @@ public interface WechatUserService {
 	 * @param entity
 	 */
 	public void create(WechatUser entity);
+	
+	public WechatUser findByOpenid(String openid);
 }

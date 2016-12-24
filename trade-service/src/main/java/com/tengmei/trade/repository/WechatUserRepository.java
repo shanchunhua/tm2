@@ -8,4 +8,6 @@ import com.tengmei.trade.domain.WechatUser;
 @Repository
 public interface WechatUserRepository extends JpaRepository<WechatUser, Long> {
 
+	WechatUser findByOpenid(String openid);
+
 }

@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import com.tengmei.wechat.service.impl.UserServiceImpl;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 @Component
 @Configurable(autowire = Autowire.BY_TYPE)
@@ -24,6 +23,9 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if (handler instanceof ResourceHttpRequestHandler) {
+			logger.debug(request.getRequestURL().toString());
+		}
 		Object user = request.getSession().getAttribute("user");
 
 		if (user == null) {

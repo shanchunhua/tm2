@@ -21,4 +21,9 @@ public class WechatUserServiceImpl implements WechatUserService {
 		wechatUserRepository.save(entity);
 	}
 
+	@Override
+	public WechatUser findByOpenid(String openid) {
+		return wechatUserRepository.findByOpenid(openid);
+	}
+
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.service.WechatUserService;
 import com.tengmei.wechat.service.BasicService;
 import com.tengmei.wechat.service.UserService;
 import com.tengmei.wechat.vo.UserInfo;
@@ -26,13 +28,23 @@ public class EntryController {
 	private BasicService basicService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private WechatUserService wechatUserService;
 
 	@RequestMapping("/wechat/oauth2")
 	public void oauth2(@RequestParam String code, @RequestParam String state, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
 		String path = (String) request.getSession().getAttribute("path");
 		String openid = basicService.getOAuth2AccessToken(code, null).getOpenid();
+
 		// query db first
+		WechatUser user = wechatUserService.findByOpenid(openid);
+		//用户未注册发品商或店主
+		if (user.getType() == null) {
+			response.sendRedirect("http://www.tengmei360.com/index.html#!/choosetype" + path);
+		}else {
+			
+		}
 		UserInfo userInfo = userService.getUserInfo(openid, null);
 		request.getSession().setAttribute("user", userInfo);
 		response.sendRedirect("http://www.tengmei360.com/" + path);

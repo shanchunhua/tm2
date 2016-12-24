@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -39,8 +40,14 @@ public class TradeServiceApplication {
 
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/**");
+				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/entry/productindex")
+						.excludePathPatterns("/wechat/oauth2", "/static/**");
 				super.addInterceptors(registry);
+			}
+			@Override
+			public void configurePathMatch(PathMatchConfigurer configurer) {
+			    super.configurePathMatch(configurer);
+			    configurer.setUseSuffixPatternMatch(false);
 			}
 		};
 	}

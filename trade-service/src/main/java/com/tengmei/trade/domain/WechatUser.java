@@ -14,6 +14,15 @@ public class WechatUser extends BaseEntity implements Serializable {
 
 	private String openid;
 	private static final long serialVersionUID = 1L;
+	private UserType type;
+	
+	public UserType getType() {
+		return type;
+	}
+
+	public void setType(UserType type) {
+		this.type = type;
+	}
 
 	public WechatUser() {
 		super();
