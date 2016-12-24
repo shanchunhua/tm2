@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.tengmei.trade.TradeServiceApplication;
 import com.tengmei.wechat.service.UserService;
-import com.tenmgei.trade.TradeServiceApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TradeServiceApplication.class })
@@ -19,7 +19,7 @@ public class UserServiceTest {
 	@Test
 	public void testGetUserInfo() {
 
-		userService.getUserInfo("o_IWcwXxfB9bHKu1qKIsqvngqY9A", null);
+		userService.getUserInfo("oVxv2wJh3_HGSqs5gQMvAtR3k8rQ", null);
 	}
 
 	@Test

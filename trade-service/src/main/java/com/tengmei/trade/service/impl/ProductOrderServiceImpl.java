@@ -1,0 +1,58 @@
+package com.tengmei.trade.service.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.tengmei.trade.domain.LogisticsStatus;
+import com.tengmei.trade.domain.PaymentStatus;
+import com.tengmei.trade.domain.ProductOrder;
+import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.Supplier;
+import com.tengmei.trade.repository.ProductOrderRepository;
+import com.tengmei.trade.service.ProductOrderService;
+
+@Service
+@Transactional
+public class ProductOrderServiceImpl implements ProductOrderService {
+
+	@Autowired
+	private ProductOrderRepository productOrderRepository;
+
+	@Override
+	public void create(ProductOrder order) {
+		productOrderRepository.save(order);
+	}
+
+	@Override
+	public void payOrder(ProductOrder order) {
+		order = productOrderRepository.findOne(order.getId());
+		if (order.getPaymentStatus() == PaymentStatus.NOT_PAID) {
+			order.setPaymentStatus(PaymentStatus.PAID);
+			productOrderRepository.save(order);
+		}
+	}
+
+	@Override
+	public void fulfillOrder(ProductOrder order) {
+		order = productOrderRepository.findOne(order.getId());
+		if (order.getLogisticsStatus() == LogisticsStatus.UNFULFILLED) {
+			order.setLogisticsStatus(LogisticsStatus.FULFILLED);
+			productOrderRepository.save(order);
+		}
+	}
+
+	@Override
+	public List<ProductOrder> findOrderByStore(Store store) {
+		return productOrderRepository.findByStore(store);
+	}
+
+	@Override
+	public List<ProductOrder> findOrderBySupplier(Supplier supplier) {
+		return productOrderRepository.findByProduct_Supplier(supplier);
+	}
+
+}
