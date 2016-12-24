@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.tengmei.wechat.service.impl.UserServiceImpl;
-
 @Component
 @Configurable(autowire = Autowire.BY_TYPE)
 public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
