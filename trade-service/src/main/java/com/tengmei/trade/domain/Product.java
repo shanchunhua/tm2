@@ -11,6 +11,25 @@ public class Product extends BaseEntity {
 	private String name;
 	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
+	private String image;
+	private Integer soldCount=0;
+	
+	public Integer getSoldCount() {
+		return soldCount;
+	}
+
+	public void setSoldCount(Integer soldCount) {
+		this.soldCount = soldCount;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "catalog_id")
 	private ProductCatalog catalog;

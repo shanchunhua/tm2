@@ -3,6 +3,9 @@ package com.tengmei.trade.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
+
+import com.tengmei.wechat.vo.UserInfo;
 
 /**
  * Entity implementation class for Entity: WechatUser
@@ -16,6 +19,17 @@ public class WechatUser extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private UserType type;
 	
+	@Transient
+	private UserInfo userInfo;
+	
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
+	}
+
 	public UserType getType() {
 		return type;
 	}

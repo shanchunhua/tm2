@@ -17,6 +17,7 @@ public class ExceptionHandlerController {
 	@ExceptionHandler(Throwable.class)
 	@ResponseBody
 	ResponseEntity<Object> handleControllerException(HttpServletRequest req, Throwable ex) {
+		ex.printStackTrace();
 		RestResult<String> restResult = new RestResult<String>(ex.getMessage());
 		restResult.setSuccess(false);
 		return new ResponseEntity<Object>(restResult, HttpStatus.INTERNAL_SERVER_ERROR);

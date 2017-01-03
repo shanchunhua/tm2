@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.SupplierStatus;
+import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.repository.SupplierRepository;
+import com.tengmei.trade.repository.WechatUserRepository;
 import com.tengmei.trade.service.SupplierService;
 
 @Service
@@ -16,9 +18,13 @@ import com.tengmei.trade.service.SupplierService;
 public class SupplierServiceImpl implements SupplierService {
 	@Autowired
 	private SupplierRepository supplierRepository;
+	@Autowired
+	private WechatUserRepository wechatUserRepository;
 
 	@Override
 	public void create(Supplier entity) {
+		entity.getUser().setType(UserType.SUPPLIER);
+		wechatUserRepository.save(entity.getUser());
 		supplierRepository.save(entity);
 	}
 

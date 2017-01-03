@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.repository.StoreRepository;
+import com.tengmei.trade.repository.WechatUserRepository;
 import com.tengmei.trade.service.StoreService;
 
 @Service
@@ -15,9 +17,12 @@ import com.tengmei.trade.service.StoreService;
 public class StoreServiceImpl implements StoreService {
 	@Autowired
 	private StoreRepository storeRepository;
-
+	@Autowired
+	private WechatUserRepository wechatUserRepository;
 	@Override
 	public void create(Store store) {
+		store.getUser().setType(UserType.STORE_OWNER);
+		wechatUserRepository.save(store.getUser());
 		storeRepository.save(store);
 	}
 	@Override

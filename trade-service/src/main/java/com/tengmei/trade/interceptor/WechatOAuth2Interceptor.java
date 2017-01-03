@@ -36,7 +36,7 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 			}
 
 			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appID + "&redirect_uri="
-					+ "http://www.tengmei360.com/entry/wechat/oauth2&response_type=code&scope=snsapi_base&state="
+					+ "http://www.tengmei360.com/wechat/oauth2&response_type=code&scope=snsapi_base&state="
 					+ "STATE" + "#wechat_redirect";
 
 			response.sendRedirect(url);

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.Supplier;
+import com.tengmei.trade.domain.UserType;
+import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.SupplierService;
 
 @RestController
@@ -22,7 +24,9 @@ public class SupplierController {
 	private SupplierService supplierService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public RestResult<Supplier> create(@RequestBody Supplier supplier) {
+	public RestResult<Supplier> create(@RequestBody Supplier supplier,HttpServletRequest request) {
+		WechatUser user=(WechatUser) request.getSession().getAttribute("user");
+		supplier.setUser(user);
 		supplierService.create(supplier);
 		return new RestResult<Supplier>();
 	}

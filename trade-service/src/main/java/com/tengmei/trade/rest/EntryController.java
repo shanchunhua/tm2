@@ -5,22 +5,28 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.interceptor.WechatOAuth2Interceptor;
 import com.tengmei.trade.service.WechatUserService;
 import com.tengmei.wechat.service.BasicService;
 import com.tengmei.wechat.service.UserService;
 import com.tengmei.wechat.vo.UserInfo;
 
-@RestController
-@RequestMapping("/entry")
+@Controller
+@RequestMapping("/")
 public class EntryController {
+	private static final Logger logger = LoggerFactory.getLogger(EntryController.class);
 	@Value("${wechat.appID}")
 	String appID;
 
@@ -32,22 +38,40 @@ public class EntryController {
 	private WechatUserService wechatUserService;
 
 	@RequestMapping("/wechat/oauth2")
-	public void oauth2(@RequestParam String code, @RequestParam String state, HttpServletResponse response,
+	public String oauth2(@RequestParam String code, @RequestParam String state, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
 		String path = (String) request.getSession().getAttribute("path");
+		logger.debug(path);
 		String openid = basicService.getOAuth2AccessToken(code, null).getOpenid();
+		UserInfo userInfo = userService.getUserInfo(openid, null);
 
 		// query db first
 		WechatUser user = wechatUserService.findByOpenid(openid);
-		//用户未注册发品商或店主
-		if (user.getType() == null) {
-			response.sendRedirect("http://www.tengmei360.com/index.html#!/choosetype" + path);
-		}else {
-			
+		// 用户未注册发品商或店主
+		if (user == null) {
+			user = new WechatUser();
+			user.setOpenid(openid);
+			wechatUserService.create(user);
+			user.setUserInfo(userInfo);
+			request.getSession().setAttribute("user", user);
+			return "redirect:http://www.tengmei360.com/index.html#!/choosetype";
+		} else {
+			user.setUserInfo(userInfo);
+			request.getSession().setAttribute("user", user);
+			if (user.getType() == null) {
+				return "redirect:http://www.tengmei360.com/index.html#!/choosetype";
+			} else {
+				if (path.equals("main")) {
+					if (user.getType().equals(UserType.SUPPLIER)) {
+						return "redirect:http://www.tengmei360.com/index.html#!" + path;
+					} else {
+						return "redirect:http://www.tengmei360.com/index.html#!storeindex";
+					}
+				}
+				return "redirect:http://www.tengmei360.com/index.html#!" + path;
+			}
 		}
-		UserInfo userInfo = userService.getUserInfo(openid, null);
-		request.getSession().setAttribute("user", userInfo);
-		response.sendRedirect("http://www.tengmei360.com/" + path);
+
 	}
 
 	@RequestMapping("/productindex")

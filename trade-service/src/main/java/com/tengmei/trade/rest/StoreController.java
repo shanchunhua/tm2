@@ -13,7 +13,7 @@ import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.StoreService;
 
 @RestController
-@RequestMapping("/stores")
+@RequestMapping("/rest/stores")
 public class StoreController {
 	@Autowired
 	private StoreService storeService;
@@ -25,7 +25,9 @@ public class StoreController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public RestResult<Store> create(@RequestBody Store store) {
+	public RestResult<Store> create(@RequestBody Store store,HttpServletRequest request) {
+		WechatUser user=(WechatUser) request.getSession().getAttribute("user");
+		store.setUser(user);
 		storeService.create(store);
 		return new RestResult<Store>();
 	}
