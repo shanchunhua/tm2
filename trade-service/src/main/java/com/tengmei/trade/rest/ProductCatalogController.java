@@ -24,6 +24,7 @@ public class ProductCatalogController {
 		for (int i = 0; i < 15; i++) {
 			ProductCatalog product = new ProductCatalog();
 			product.setName("Test" + System.currentTimeMillis());
+			product.setId(Long.valueOf(i+1));
 			products.add(product);
 		}
 		result.setData(products);

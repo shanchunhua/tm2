@@ -8,61 +8,61 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 @Entity
 public class Product extends BaseEntity {
+	@ManyToOne
+	@JoinColumn(name = "catalog_id")
+	private ProductCatalog catalog;
+	private String image;
 	private String name;
 	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
-	private String image;
-	private Integer soldCount=0;
 	
-	public Integer getSoldCount() {
-		return soldCount;
-	}
+	private Integer soldCount=0;
 
-	public void setSoldCount(Integer soldCount) {
-		this.soldCount = soldCount;
+	@ManyToOne
+	@JoinColumn(name = "supplier_id")
+	private Supplier supplier;
+
+	public ProductCatalog getCatalog() {
+		return catalog;
 	}
 
 	public String getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "catalog_id")
-	private ProductCatalog catalog;
-	@ManyToOne
-	@JoinColumn(name = "supplier_id")
-	private Supplier supplier;
-
 	public String getName() {
 		return name;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public Integer getSoldCount() {
+		return soldCount;
 	}
 
-	public ProductCatalog getCatalog() {
-		return catalog;
+	public Supplier getSupplier() {
+		return supplier;
 	}
 
 	public void setCatalog(ProductCatalog catalog) {
 		this.catalog = catalog;
 	}
 
-	public Supplier getSupplier() {
-		return supplier;
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public void setSoldCount(Integer soldCount) {
+		this.soldCount = soldCount;
 	}
 
 	public void setSupplier(Supplier supplier) {

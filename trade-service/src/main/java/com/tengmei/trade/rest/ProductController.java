@@ -23,6 +23,7 @@ public class ProductController {
 		List<Product> products = new ArrayList<>();
 		for (int i = 0; i < 15; i++) {
 			Product product = new Product();
+			product.setId(Long.valueOf(i+1));
 			product.setName("Test" + System.currentTimeMillis());
 			products.add(product);
 		}
