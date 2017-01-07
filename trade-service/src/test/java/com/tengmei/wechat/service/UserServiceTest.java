@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tengmei.trade.TradeServiceApplication;
 import com.tengmei.wechat.service.UserService;
+import com.tengmei.wechat.vo.UserInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TradeServiceApplication.class })
@@ -19,7 +20,9 @@ public class UserServiceTest {
 	@Test
 	public void testGetUserInfo() {
 
-		userService.getUserInfo("oVxv2wJh3_HGSqs5gQMvAtR3k8rQ", null);
+		UserInfo userInfo = userService.getUserInfo("oVxv2wJh3_HGSqs5gQMvAtR3k8rQ", null);
+		String image=userInfo.getHeadimgurl();
+		System.out.println(image);
 	}
 
 	@Test

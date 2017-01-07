@@ -13,6 +13,8 @@ import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.repository.ProductOrderRepository;
+import com.tengmei.trade.repository.ProductRepository;
+import com.tengmei.trade.repository.StoreRepository;
 import com.tengmei.trade.service.ProductOrderService;
 
 @Service
@@ -21,9 +23,17 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
 	@Autowired
 	private ProductOrderRepository productOrderRepository;
+	@Autowired
+	private ProductRepository productRepository;
+	@Autowired
+	private StoreRepository storeRepository;
 
 	@Override
 	public void create(ProductOrder order) {
+		order.setProduct(productRepository.findOne(order.getProduct().getId()));
+		order.setStore(storeRepository.findOne(order.getStore().getId()));
+		order.setPrice(order.getProduct().getPrice());
+		order.setExperienceMoneyRate(order.getProduct().getCatalog().getExperienceMoneyRate());
 		productOrderRepository.save(order);
 	}
 

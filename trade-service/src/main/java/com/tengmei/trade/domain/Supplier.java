@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 发品商实体类
@@ -42,8 +47,48 @@ public class Supplier extends BaseEntity implements Serializable {
 	 */
 	private String cellphone;
 	private SupplierStatus status = SupplierStatus.UNCERTFIED;
+	
+	private String banner1;
+	private String banner2;
+	private String banner3;
+	
+	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "supplier")
+//	@Transient
+	private SupplierWallet wallet = new SupplierWallet();
+	public SupplierWallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(SupplierWallet wallet) {
+		this.wallet = wallet;
+	}
+
 	public Set<Store> getStores() {
 		return stores;
+	}
+
+	public String getBanner1() {
+		return banner1;
+	}
+
+	public void setBanner1(String banner1) {
+		this.banner1 = banner1;
+	}
+
+	public String getBanner2() {
+		return banner2;
+	}
+
+	public void setBanner2(String banner2) {
+		this.banner2 = banner2;
+	}
+
+	public String getBanner3() {
+		return banner3;
+	}
+
+	public void setBanner3(String banner3) {
+		this.banner3 = banner3;
 	}
 
 	public void setStores(Set<Store> stores) {
@@ -52,8 +97,10 @@ public class Supplier extends BaseEntity implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private WechatUser user;
 	@ManyToMany(mappedBy = "suppliers")
+	@JsonIgnore
 	private Set<Store> stores = new HashSet<Store>();
 
 	public WechatUser getUser() {

@@ -10,75 +10,95 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ProductOrder extends BaseEntity {
 
-	private Integer quantity;
-	@Column(precision = 10, scale = 2)
-	private BigDecimal price;
 	@Column(precision = 5, scale = 2)
 	private BigDecimal experienceMoneyRate;
-	@ManyToOne
-	@JoinColumn(name = "store_id")
-	private Store store;
+	private LogisticsStatus logisticsStatus = LogisticsStatus.UNFULFILLED;
+	@Column
+	private String orderNo = System.nanoTime() + "";
+	private PaymentStatus paymentStatus = PaymentStatus.NOT_PAID;
+	
+	@Column(precision = 10, scale = 2)
+	private BigDecimal price;
+
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-	private PaymentStatus paymentStatus = PaymentStatus.NOT_PAID;
-	private LogisticsStatus logisticsStatus = LogisticsStatus.UNFULFILLED;
 
+	private Integer quantity;
 
+	@ManyToOne
+	@JoinColumn(name = "store_id")
+	private Store store;
 
-	public Integer getQuantity() {
-		return quantity;
+	@Column(precision = 10, scale = 2)
+	private BigDecimal total;
+
+	public BigDecimal getExperienceMoneyRate() {
+		return experienceMoneyRate;
 	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public LogisticsStatus getLogisticsStatus() {
+		return logisticsStatus;
+	}
+	public String getOrderNo() {
+		return orderNo;
+	}
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
 	}
 
 	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public Product getProduct() {
+		return product;
 	}
 
-	public BigDecimal getExperienceMoneyRate() {
-		return experienceMoneyRate;
-	}
-
-	public void setExperienceMoneyRate(BigDecimal experienceMoneyRate) {
-		this.experienceMoneyRate = experienceMoneyRate;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
 	public Store getStore() {
 		return store;
 	}
 
-	public void setStore(Store store) {
-		this.store = store;
+	public BigDecimal getTotal() {
+		return total;
 	}
 
-	public Product getProduct() {
-		return product;
+	public void setExperienceMoneyRate(BigDecimal experienceMoneyRate) {
+		this.experienceMoneyRate = experienceMoneyRate;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setLogisticsStatus(LogisticsStatus logisticsStatus) {
+		this.logisticsStatus = logisticsStatus;
 	}
 
-	public PaymentStatus getPaymentStatus() {
-		return paymentStatus;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 
 	public void setPaymentStatus(PaymentStatus paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
 
-	public LogisticsStatus getLogisticsStatus() {
-		return logisticsStatus;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
-	public void setLogisticsStatus(LogisticsStatus logisticsStatus) {
-		this.logisticsStatus = logisticsStatus;
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 }

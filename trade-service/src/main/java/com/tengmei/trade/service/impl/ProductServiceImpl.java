@@ -1,5 +1,6 @@
 package com.tengmei.trade.service.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -26,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> findBySuppliers(List<Supplier> suppliers) {
+	public List<Product> findBySuppliers(Collection<Supplier> suppliers) {
 		return productRepository.findBySupplierIn(suppliers);
 	}
 
@@ -36,8 +37,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> findBySuppliersAndProductCatalog(List<Supplier> suppliers, ProductCatalog catalog) {
+	public List<Product> findBySuppliersAndProductCatalog(Collection<Supplier> suppliers, ProductCatalog catalog) {
 		return productRepository.findBySupplierInAndCatalog(suppliers, catalog);
+	}
+
+	@Override
+	public Product findById(Long id) {
+		return productRepository.findOne(id);
 	}
 
 }

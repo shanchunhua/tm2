@@ -61,22 +61,25 @@ public class EntryController {
 			if (user.getType() == null) {
 				return "redirect:http://www.tengmei360.com/index.html#!/choosetype";
 			} else {
-				if (path.equals("main")) {
-					if (user.getType().equals(UserType.SUPPLIER)) {
-						return "redirect:http://www.tengmei360.com/index.html#!" + path;
-					} else {
-						return "redirect:http://www.tengmei360.com/index.html#!storeindex";
-					}
-				}
-				return "redirect:http://www.tengmei360.com/index.html#!" + path;
+				return "redirect:" + path;
 			}
 		}
 
 	}
 
 	@RequestMapping("/productindex")
-	public void productIndex(HttpServletResponse response) throws IOException {
-		response.getWriter().append("ok");
+	public String productIndex(HttpServletResponse response) throws IOException {
+		return "redirect:http://www.tengmei360.com/index.html#!productindex";
+	}
+
+	@RequestMapping("/main")
+	public String main(HttpServletRequest request) throws IOException {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		if (user.getType().equals(UserType.SUPPLIER)) {
+			return "redirect:http://www.tengmei360.com/index.html#!supplierindex";
+		} else {
+			return "redirect:http://www.tengmei360.com/index.html#!storeindex";
+		}
 	}
 
 	@RequestMapping("/login/{menu}")

@@ -12,14 +12,14 @@ import com.tengmei.trade.domain.WechatUser;
 @RequestMapping("/rest/users")
 public class UserController {
 	@RequestMapping("/current")
-	public WechatUser getCurrentUser( HttpServletRequest request){
-		WechatUser user=(WechatUser) request.getSession().getAttribute("user");
-		
-		//TODO test only
-//		WechatUser wechatUser=new WechatUser();
-//		wechatUser.setOpenid("test");
-//		wechatUser.setType(UserType.STORE_OWNER);
-		
-		return user;
+	public RestResult<WechatUser> getCurrentUser(HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+
+		// TODO test only
+		// WechatUser wechatUser=new WechatUser();
+		// wechatUser.setOpenid("test");
+		// wechatUser.setType(UserType.STORE_OWNER);
+
+		return new RestResult<WechatUser>(user);
 	}
 }

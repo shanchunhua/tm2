@@ -15,7 +15,7 @@ public class UserInfo {
 	private String city;
 	private String province;
 	private String country;
-	private String headingimgurl;
+	private String headimgurl;
 	private Long subscribeTime;
 	private String unionid;
 	private String remark;
@@ -68,11 +68,11 @@ public class UserInfo {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public String getHeadingimgurl() {
-		return headingimgurl;
+	public String getHeadimgurl() {
+		return headimgurl;
 	}
-	public void setHeadingimgurl(String headingimgurl) {
-		this.headingimgurl = headingimgurl;
+	public void setHeadimgurl(String headimgurl) {
+		this.headimgurl = headimgurl;
 	}
 	public Long getSubscribeTime() {
 		return subscribeTime;
