@@ -33,6 +33,15 @@ public class ProductOrder extends BaseEntity {
 	@Column(precision = 10, scale = 2)
 	private BigDecimal total;
 
+	@Column(precision = 10, scale = 2)
+	private BigDecimal experienceMoney;
+	
+	public BigDecimal getExperienceMoney() {
+		return experienceMoney;
+	}
+	public void setExperienceMoney(BigDecimal experienceMoney) {
+		this.experienceMoney = experienceMoney;
+	}
 	public BigDecimal getExperienceMoneyRate() {
 		return experienceMoneyRate;
 	}

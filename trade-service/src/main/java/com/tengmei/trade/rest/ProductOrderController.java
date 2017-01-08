@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.bo.OrderSummaryBySupplier;
 import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
@@ -49,6 +50,16 @@ public class ProductOrderController {
 			orders = productOrderService.findOrderBySupplier(supplierService.findSupplier(user));
 		}
 		result.setData(orders);
+		return result;
+	}
+
+	@RequestMapping("/sumbysupplier")
+	public RestResult<List<OrderSummaryBySupplier>> getOrderSummaryBySupplier(HttpServletRequest request) {
+		RestResult<List<OrderSummaryBySupplier>> result = new RestResult<List<OrderSummaryBySupplier>>();
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		List<OrderSummaryBySupplier> summaries = productOrderService
+				.getOrderSummaryBySuppliers(storeService.findStoreByUser(user).getSuppliers());
+		result.setData(summaries);
 		return result;
 	}
 }

@@ -34,7 +34,9 @@ public class ProductOrderRepositoryTest {
 	@Test
 	public void testTotalBySupplier() {
 		Supplier supplier=supplierRepository.findOne(2L);
-		BigDecimal total=productOrderRepository.totalBySupplier(supplier);
-		System.out.println(total);	
+		BigDecimal[] totalAndExperience=(BigDecimal[]) productOrderRepository.totalBySupplier(supplier);
+		System.out.println(totalAndExperience.length);
+		System.out.println(totalAndExperience[0]);
+		System.out.println(totalAndExperience[1]);
 	}
 }

@@ -20,8 +20,8 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long
 
 	public Integer countByProduct_SupplierAndPaymentStatus(Supplier supplier, PaymentStatus paymentStatus);
 
-	@Query("select sum(o.total) from ProductOrder o where o.product.supplier=?1 and o.paymentStatus=com.tengmei.trade.domain.PaymentStatus.PAID")
-	public BigDecimal totalBySupplier(Supplier supplier);
+	@Query("select sum(o.total),sum(o.experienceMoney) from ProductOrder o where o.product.supplier=?1 and o.paymentStatus=com.tengmei.trade.domain.PaymentStatus.PAID")
+	public Object totalBySupplier(Supplier supplier);
 
 	public Integer countByStoreAndPaymentStatus(Store store, PaymentStatus paymentStatus);
 

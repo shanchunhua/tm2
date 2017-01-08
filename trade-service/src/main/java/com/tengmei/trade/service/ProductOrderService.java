@@ -1,7 +1,9 @@
 package com.tengmei.trade.service;
 
+import java.util.Collection;
 import java.util.List;
 
+import com.tengmei.trade.bo.OrderSummaryBySupplier;
 import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.Supplier;
@@ -37,4 +39,6 @@ public interface ProductOrderService {
 	public List<ProductOrder> findOrderByStore(Store store);
 
 	public List<ProductOrder> findOrderBySupplier(Supplier supplier);
+
+	public List<OrderSummaryBySupplier> getOrderSummaryBySuppliers(Collection<Supplier> suppliers);
 }

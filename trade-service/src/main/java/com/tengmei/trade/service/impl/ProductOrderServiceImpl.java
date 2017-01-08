@@ -1,5 +1,8 @@
 package com.tengmei.trade.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -7,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tengmei.trade.bo.OrderSummaryBySupplier;
 import com.tengmei.trade.domain.LogisticsStatus;
 import com.tengmei.trade.domain.PaymentStatus;
 import com.tengmei.trade.domain.ProductOrder;
@@ -34,6 +38,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 		order.setStore(storeRepository.findOne(order.getStore().getId()));
 		order.setPrice(order.getProduct().getPrice());
 		order.setExperienceMoneyRate(order.getProduct().getCatalog().getExperienceMoneyRate());
+		order.setTotal(order.getPrice().multiply(new BigDecimal(order.getQuantity())));
+		order.setExperienceMoney(order.getExperienceMoneyRate().multiply(order.getPrice())
+				.multiply(new BigDecimal(order.getQuantity())));
 		productOrderRepository.save(order);
 	}
 
@@ -63,6 +70,21 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	@Override
 	public List<ProductOrder> findOrderBySupplier(Supplier supplier) {
 		return productOrderRepository.findByProduct_Supplier(supplier);
+	}
+
+	@Override
+	public List<OrderSummaryBySupplier> getOrderSummaryBySuppliers(Collection<Supplier> suppliers) {
+		List<OrderSummaryBySupplier> summaries = new ArrayList<>();
+		for (Supplier supplier : suppliers) {
+			OrderSummaryBySupplier summary = new OrderSummaryBySupplier();
+			int count = productOrderRepository.countByProduct_SupplierAndPaymentStatus(supplier, PaymentStatus.PAID);
+			summary.setOrderCount(count);
+			summary.setSupplier(supplier);
+//			summary.setTotalAmount(productOrderRepository.totalBySupplier(supplier)[0]);
+			// summary.setTotalExperienceMoney(totalExperienceMoney);
+			summaries.add(summary);
+		}
+		return summaries;
 	}
 
 }
