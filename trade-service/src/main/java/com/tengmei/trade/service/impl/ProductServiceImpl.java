@@ -46,4 +46,10 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.findOne(id);
 	}
 
+	@Override
+	public Integer countBySupplier(Supplier supplier) {
+		return productRepository.countBySupplier(supplier);
+	}
+
+
 }

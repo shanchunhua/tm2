@@ -32,6 +32,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	@Autowired
 	private StoreRepository storeRepository;
 
+	/**
+	 * 订单创建
+	 */
 	@Override
 	public void create(ProductOrder order) {
 		order.setProduct(productRepository.findOne(order.getProduct().getId()));
@@ -44,6 +47,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 		productOrderRepository.save(order);
 	}
 
+	/**
+	 * 订单支付
+	 */
 	@Override
 	public void payOrder(ProductOrder order) {
 		order = productOrderRepository.findOne(order.getId());
@@ -53,6 +59,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 		}
 	}
 
+	/**
+	 * 订单发货
+	 */
 	@Override
 	public void fulfillOrder(ProductOrder order) {
 		order = productOrderRepository.findOne(order.getId());
@@ -62,16 +71,25 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 		}
 	}
 
+	/**
+	 * 查询店铺的订单
+	 */
 	@Override
 	public List<ProductOrder> findOrderByStore(Store store) {
 		return productOrderRepository.findByStore(store);
 	}
 
+	/**
+	 * 查询供应商的订单
+	 */
 	@Override
 	public List<ProductOrder> findOrderBySupplier(Supplier supplier) {
 		return productOrderRepository.findByProduct_Supplier(supplier);
 	}
 
+	/**
+	 * 对不同供应商统计他们的订单金额和体验金
+	 */
 	@Override
 	public List<OrderSummaryBySupplier> getOrderSummaryBySuppliers(Collection<Supplier> suppliers) {
 		List<OrderSummaryBySupplier> summaries = new ArrayList<>();
@@ -80,11 +98,44 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 			int count = productOrderRepository.countByProduct_SupplierAndPaymentStatus(supplier, PaymentStatus.PAID);
 			summary.setOrderCount(count);
 			summary.setSupplier(supplier);
-//			summary.setTotalAmount(productOrderRepository.totalBySupplier(supplier)[0]);
-			// summary.setTotalExperienceMoney(totalExperienceMoney);
+			Object[] totalAndExperienceMoney = (Object[]) productOrderRepository.totalBySupplier(supplier);
+			summary.setTotalAmount((BigDecimal) totalAndExperienceMoney[0]);
+			summary.setTotalExperienceMoney((BigDecimal) totalAndExperienceMoney[1]);
 			summaries.add(summary);
 		}
 		return summaries;
 	}
 
+	/**
+	 * 查询某个店铺的总销售金额
+	 */
+	@Override
+	public BigDecimal getTotalOrderAmountByStore(Store store) {
+		return productOrderRepository.totalByStore(store);
+	}
+
+	/**
+	 * 查询某个店铺的总订单
+	 */
+	@Override
+	public Integer getTotalOrderCountByStore(Store store) {
+		return productOrderRepository.countByStoreAndPaymentStatus(store, PaymentStatus.PAID);
+	}
+
+	/**
+	 * 查询某个供应商的总订单
+	 */
+	@Override
+	public Integer getTotalOrderCountBySupplier(Supplier supplier) {
+		return productOrderRepository.countByProduct_SupplierAndPaymentStatus(supplier, PaymentStatus.PAID);
+	}
+
+	/**
+	 * 查询某个供应商的总销售金额
+	 */
+	@Override
+	public BigDecimal getTotalOrderAmountBySupplier(Supplier supplier) {
+		Object[] totalAmountAndExpMoney =(Object[]) productOrderRepository.totalBySupplier(supplier);
+		return (BigDecimal) totalAmountAndExpMoney[0];
+	}
 }

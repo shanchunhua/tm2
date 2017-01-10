@@ -1,6 +1,6 @@
 package com.tengmei.trade.rest;
 
-import java.math.BigDecimal;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.rest.vo.StoreSummary;
+import com.tengmei.trade.service.ProductOrderService;
+import com.tengmei.trade.service.ProductService;
 import com.tengmei.trade.service.StoreService;
 
 @RestController
@@ -20,6 +23,10 @@ import com.tengmei.trade.service.StoreService;
 public class StoreController {
 	@Autowired
 	private StoreService storeService;
+	@Autowired
+	private ProductOrderService productOrderService;
+	@Autowired
+	private ProductService productService;
 
 	/**
 	 * 创建店铺申请
@@ -54,14 +61,18 @@ public class StoreController {
 		Store store = storeService.findStoreByUser(user);
 		StoreSummary storeSummary = new StoreSummary();
 		storeSummary.setStore(store);
-		storeSummary.setSupplierCount(10);
-		storeSummary.setTotalAmount(new BigDecimal(1000));
-		storeSummary.setOrderCount(100);
+		storeSummary.setSupplierCount(store.getSuppliers().size());
+		storeSummary.setTotalAmount(productOrderService.getTotalOrderAmountByStore(store));
+		storeSummary.setOrderCount(productOrderService.getTotalOrderCountByStore(store));
 		return new RestResult<StoreSummary>(storeSummary);
 	}
-	// @RequestMapping("/certificate/{id}")
-	// public RestResult<Void> certificate(@PathVariable Long id) {
-	// storeService.certificate(id);
-	// return new RestResult<Void>();
-	// }
+	 @RequestMapping("/suppliers")
+	 public RestResult<Collection<Supplier>> getStoreSuppliers(HttpServletRequest request) {
+			WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+			Store store = storeService.findStoreByUser(user);
+			for (Supplier supplier : store.getSuppliers()) {
+				supplier.setProductCount(productService.countBySupplier(supplier));
+			}
+			return new RestResult<Collection<Supplier>> (store.getSuppliers());
+	 }
 }

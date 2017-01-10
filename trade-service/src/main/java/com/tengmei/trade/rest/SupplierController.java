@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.rest.vo.StoreSummary;
+import com.tengmei.trade.rest.vo.SupplierSummary;
+import com.tengmei.trade.service.ProductOrderService;
 import com.tengmei.trade.service.SupplierService;
 
 @RestController
@@ -22,7 +26,8 @@ import com.tengmei.trade.service.SupplierService;
 public class SupplierController {
 	@Autowired
 	private SupplierService supplierService;
-
+	@Autowired
+	private ProductOrderService productOrderService;
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResult<Supplier> create(@RequestBody Supplier supplier,HttpServletRequest request) {
 		WechatUser user=(WechatUser) request.getSession().getAttribute("user");
@@ -31,6 +36,23 @@ public class SupplierController {
 		return new RestResult<Supplier>();
 	}
 
+	@RequestMapping("/current")
+	public RestResult<Supplier> getSupplierByOnlineUser(HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		Supplier supplier = supplierService.findSupplier(user);
+		return new RestResult<Supplier>(supplier);
+	}
+	@RequestMapping("/summary")
+	public RestResult<SupplierSummary> getStoreSummaryByOnlineUser(HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		Supplier supplier = supplierService.findSupplier(user);
+		SupplierSummary summary = new SupplierSummary();
+		summary.setSupplier(supplier);
+		summary.setStoreCount(supplier.getStores().size());
+		summary.setTotalAmount(productOrderService.getTotalOrderAmountBySupplier(supplier));
+		summary.setOrderCount(productOrderService.getTotalOrderCountBySupplier(supplier));
+		return new RestResult<SupplierSummary>(summary);
+	}
 	@RequestMapping("/certificate/{id}")
 	public RestResult<Void> certificate(@PathVariable Long id) {
 		supplierService.certificate(id);

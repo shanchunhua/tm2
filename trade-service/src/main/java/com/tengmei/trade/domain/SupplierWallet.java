@@ -41,14 +41,14 @@ public class SupplierWallet extends CommonEntity {
 	@JsonIgnore
 	private Supplier supplier;
 	@Column(precision = 10, scale = 2)
-	private BigDecimal total;
+	private BigDecimal total=new BigDecimal(0);
 	@Column(precision = 10, scale = 2)
-	private BigDecimal withdrawed;
+	private BigDecimal withdrawed=new BigDecimal(0);
 	/**
 	 * left是关键字，改成leftAmount
 	 */
 	@Column(precision = 10, scale = 2,name="leftAmount")
-	private BigDecimal left;
+	private BigDecimal left=new BigDecimal(0);
 	
 	
 	public BigDecimal getTotal() {

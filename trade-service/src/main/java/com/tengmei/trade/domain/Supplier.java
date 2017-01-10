@@ -55,6 +55,17 @@ public class Supplier extends BaseEntity implements Serializable {
 	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "supplier")
 //	@Transient
 	private SupplierWallet wallet = new SupplierWallet();
+	
+	@Transient
+	private Integer productCount;
+	public Integer getProductCount() {
+		return productCount;
+	}
+
+	public void setProductCount(Integer productCount) {
+		this.productCount = productCount;
+	}
+
 	public SupplierWallet getWallet() {
 		return wallet;
 	}

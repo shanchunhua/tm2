@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	List<Product> findBySupplierInAndCatalog(Collection<Supplier> supplier, ProductCatalog catalog);
 
 	List<Product> findBySupplierIn(Collection<Supplier> supplier);
+	
+	Integer countBySupplier(Supplier supplier);
 }

@@ -17,5 +17,7 @@ public interface ProductService {
 	public List<Product> findBySuppliersAndProductCatalog(Collection<Supplier> suppliers, ProductCatalog catalog);
 
 	public Product findById(Long id);
+	
+	public Integer countBySupplier(Supplier supplier);
 
 }
