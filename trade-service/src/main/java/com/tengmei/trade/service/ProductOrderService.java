@@ -3,7 +3,9 @@ package com.tengmei.trade.service;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+import com.tengmei.trade.bo.OrderSummaryByStore;
 import com.tengmei.trade.bo.OrderSummaryBySupplier;
 import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Store;
@@ -50,4 +52,6 @@ public interface ProductOrderService {
 	Integer getTotalOrderCountBySupplier(Supplier supplier);
 
 	BigDecimal getTotalOrderAmountBySupplier(Supplier supplier);
+
+	public List<OrderSummaryByStore> getOrderSummaryByStores(Set<Store> stores);
 }

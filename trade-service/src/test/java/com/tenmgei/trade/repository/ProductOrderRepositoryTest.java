@@ -1,7 +1,5 @@
 package com.tenmgei.trade.repository;
 
-import java.math.BigDecimal;
-
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -12,8 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tengmei.trade.TradeServiceApplication;
 import com.tengmei.trade.domain.PaymentStatus;
+import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.repository.ProductOrderRepository;
+import com.tengmei.trade.repository.StoreRepository;
 import com.tengmei.trade.repository.SupplierRepository;
 
 @RunWith(SpringRunner.class)
@@ -24,6 +24,8 @@ public class ProductOrderRepositoryTest {
 	private ProductOrderRepository productOrderRepository;
 	@Autowired
 	private SupplierRepository supplierRepository;
+	@Autowired
+	private StoreRepository storeRepository;
 
 	@Test
 	public void testCountByProduct_SupplierAndPaymentStatus() {
@@ -40,5 +42,14 @@ public class ProductOrderRepositoryTest {
 		System.out.println(temp.length);
 		System.out.println(temp[0]);
 		System.out.println(temp[1]);
+	}
+	@Test
+	public void testTotalByStore() {
+		Store store=storeRepository.findOne(6L);
+		Object[] totalAndExperience= (Object[]) productOrderRepository.totalByStore(store);
+		System.out.println(totalAndExperience.getClass().getName());
+		System.out.println(totalAndExperience.length);
+		System.out.println(totalAndExperience[0]);
+		System.out.println(totalAndExperience[1]);
 	}
 }

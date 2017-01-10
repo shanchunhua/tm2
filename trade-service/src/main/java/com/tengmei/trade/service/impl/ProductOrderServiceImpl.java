@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tengmei.trade.bo.OrderSummaryByStore;
 import com.tengmei.trade.bo.OrderSummaryBySupplier;
 import com.tengmei.trade.domain.LogisticsStatus;
 import com.tengmei.trade.domain.PaymentStatus;
@@ -111,7 +113,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	 */
 	@Override
 	public BigDecimal getTotalOrderAmountByStore(Store store) {
-		return productOrderRepository.totalByStore(store);
+		Object[] totalAndExperienceMoney = (Object[]) productOrderRepository.totalByStore(store);
+		return (BigDecimal) totalAndExperienceMoney[0];
 	}
 
 	/**
@@ -137,5 +140,21 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	public BigDecimal getTotalOrderAmountBySupplier(Supplier supplier) {
 		Object[] totalAmountAndExpMoney =(Object[]) productOrderRepository.totalBySupplier(supplier);
 		return (BigDecimal) totalAmountAndExpMoney[0];
+	}
+
+	@Override
+	public List<OrderSummaryByStore> getOrderSummaryByStores(Set<Store> stores) {
+		List<OrderSummaryByStore> summaries = new ArrayList<>();
+		for (Store store : stores) {
+			OrderSummaryByStore summary = new OrderSummaryByStore();
+			int count = productOrderRepository.countByStoreAndPaymentStatus(store, PaymentStatus.PAID);
+			summary.setOrderCount(count);
+			summary.setStore(store);
+			Object[] totalAndExperienceMoney = (Object[]) productOrderRepository.totalByStore(store);
+			summary.setTotalAmount((BigDecimal) totalAndExperienceMoney[0]);
+			summary.setTotalExperienceMoney((BigDecimal) totalAndExperienceMoney[1]);
+			summaries.add(summary);
+		}
+		return summaries;
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.bo.OrderSummaryByStore;
 import com.tengmei.trade.bo.OrderSummaryBySupplier;
 import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.UserType;
@@ -70,6 +71,15 @@ public class ProductOrderController {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		List<OrderSummaryBySupplier> summaries = productOrderService
 				.getOrderSummaryBySuppliers(storeService.findStoreByUser(user).getSuppliers());
+		result.setData(summaries);
+		return result;
+	}
+	@RequestMapping("/sumbystore")
+	public RestResult<List<OrderSummaryByStore>> getOrderSummaryByStore(HttpServletRequest request) {
+		RestResult<List<OrderSummaryByStore>> result = new RestResult<List<OrderSummaryByStore>>();
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		List<OrderSummaryByStore> summaries = productOrderService
+				.getOrderSummaryByStores(supplierService.findSupplier(user).getStores());
 		result.setData(summaries);
 		return result;
 	}
