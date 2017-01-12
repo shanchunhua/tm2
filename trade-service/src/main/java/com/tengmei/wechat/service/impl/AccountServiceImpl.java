@@ -34,7 +34,6 @@ public class AccountServiceImpl implements AccountService {
 		QRCodeTicketResponse response=restTemplate.postForObject(url, input, QRCodeTicketResponse.class, basicService.getAccessToken().getAccessToken());
 		logger.debug(response.getTicket());
 		logger.debug(response.getUrl());
-		logger.debug(response.getExpireSeconds().toString());
 		return response;
 	}
 	@Override

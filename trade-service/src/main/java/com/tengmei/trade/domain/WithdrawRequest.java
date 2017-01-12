@@ -3,6 +3,8 @@ package com.tengmei.trade.domain;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * 提现请求表
@@ -15,7 +17,9 @@ public class WithdrawRequest extends BaseEntity {
 	private BigDecimal amount;
 
 	private WithdrawRequestStatus status = WithdrawRequestStatus.NEW;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "suppiler_id")
 	private Supplier supplier;
 
 	public Supplier getSupplier() {
