@@ -38,6 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.tengmei.wechat.service.PaymentService;
+import com.tengmei.wechat.util.StringObjectConverter;
 import com.tengmei.wechat.vo.UnifiedOrderRequest;
 import com.tengmei.wechat.vo.UnifiedOrderResponse;
 
@@ -66,9 +67,10 @@ public class PaymentServiceImpl implements PaymentService {
 		headers.setContentType(MediaType.APPLICATION_XML);
 		HttpEntity<String> reqEntity = new HttpEntity<String>(xml, headers);
 		HttpEntity<String> resEntity = restTemplate.postForEntity(url, reqEntity, String.class);
-		logger.debug(resEntity.getBody());
-		logger.debug(resEntity.toString());
-		return null;
+		String responseXml = resEntity.getBody();
+		logger.debug(responseXml);
+		Map<String, String> response = StringObjectConverter.convertXML2Object(responseXml);
+		return response;
 	}
 
 	private static String createXML(Map<String, Object> request) {
@@ -105,7 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
 		try {
 			KeyStore keyStore = KeyStore.getInstance("PKCS12");
 			FileInputStream instream = new FileInputStream(new File(certLocation));
-			System.out.println(">>>>>>>>>>>>>"+mchid);
+			System.out.println(">>>>>>>>>>>>>" + mchid);
 			keyStore.load(instream, mchid.toCharArray());//
 			instream.close();
 			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mchid.toCharArray()).build();

@@ -55,7 +55,8 @@ public class PaymentServiceTest {
 		request.put("openid", "oVxv2wFnV7u-PEHwOSHb7fJ_a00E");
 		String sign = signatureService.getSign(request);
 		request.put("sign", sign);
-		paymentService.createUnifiedOrder(request);
+		Map<String,String> result=paymentService.createUnifiedOrder(request);
+		System.out.println(result.get("prepay_id"));
 	}
 	
 	@Test
