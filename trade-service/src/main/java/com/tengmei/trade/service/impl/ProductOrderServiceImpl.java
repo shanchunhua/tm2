@@ -138,7 +138,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	 */
 	@Override
 	public BigDecimal getTotalOrderAmountBySupplier(Supplier supplier) {
-		Object[] totalAmountAndExpMoney =(Object[]) productOrderRepository.totalBySupplier(supplier);
+		Object[] totalAmountAndExpMoney = (Object[]) productOrderRepository.totalBySupplier(supplier);
 		return (BigDecimal) totalAmountAndExpMoney[0];
 	}
 
@@ -156,5 +156,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 			summaries.add(summary);
 		}
 		return summaries;
+	}
+
+	@Override
+	public ProductOrder findById(Long id) {
+		return productOrderRepository.findOne(id);
 	}
 }

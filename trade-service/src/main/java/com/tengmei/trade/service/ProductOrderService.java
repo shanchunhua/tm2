@@ -44,9 +44,9 @@ public interface ProductOrderService {
 	public List<ProductOrder> findOrderBySupplier(Supplier supplier);
 
 	public List<OrderSummaryBySupplier> getOrderSummaryBySuppliers(Collection<Supplier> suppliers);
-	
+
 	public BigDecimal getTotalOrderAmountByStore(Store store);
-	
+
 	public Integer getTotalOrderCountByStore(Store store);
 
 	Integer getTotalOrderCountBySupplier(Supplier supplier);
@@ -54,4 +54,6 @@ public interface ProductOrderService {
 	BigDecimal getTotalOrderAmountBySupplier(Supplier supplier);
 
 	public List<OrderSummaryByStore> getOrderSummaryByStores(Set<Store> stores);
+
+	public ProductOrder findById(Long id);
 }
