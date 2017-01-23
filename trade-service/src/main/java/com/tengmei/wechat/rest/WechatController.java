@@ -59,6 +59,8 @@ public class WechatController {
 		request.put("notify_url", "https://www.tengmei360.com/wechat/payment/notify");
 		request.put("trade_type", "JSAPI");
 		request.put("openid", user.getUserInfo().getOpenid());
+		String sign = signatureService.getSign(request);
+		request.put("sign", sign);
 
 		Map<String, String> unifyOrderResponseMap = paymentService.createUnifiedOrder(request);
 
@@ -83,7 +85,7 @@ public class WechatController {
 		String nonceStr = RandomStringGenerator.getRandomStringByLength(32);
 		String timestamp = Long.toString(System.currentTimeMillis() / 1000);
 		String jsapiTicket = basicService.getJsApiTicket();
-		String url = "https://www.tengmei360.com/index.html";
+		String url = "http://www.tengmei360.com/index.html";
 		String string1 = "jsapi_ticket=" + jsapiTicket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url="
 				+ url;
 		logger.debug(string1);
@@ -102,9 +104,9 @@ public class WechatController {
 			e.printStackTrace();
 		}
 		Map<String, String> ret = new HashMap<>();
-		ret.put("url", url);
+//		ret.put("url", url);
 		ret.put("appId", appID);
-		ret.put("jsapi_ticket", jsapiTicket);
+//		ret.put("jsapi_ticket", jsapiTicket);
 		ret.put("nonceStr", nonceStr);
 		ret.put("timestamp", timestamp);
 		ret.put("signature", signature);

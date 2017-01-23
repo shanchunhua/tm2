@@ -40,7 +40,7 @@ public class PaymentServiceTest {
 	@Test
 	public void testCreateUnifiedOrderMapOfStringObject() {
 
-		ProductOrder order = productOrderService.findById(2L);
+		ProductOrder order = productOrderService.findById(18L);
 		Map<String, Object> request = new HashMap<String, Object>();
 		request.put("appid", appID);
 		request.put("mch_id", mchid);
@@ -50,7 +50,7 @@ public class PaymentServiceTest {
 		request.put("total_fee", order.getTotal().multiply(new BigDecimal(100)).intValue());
 
 		request.put("spbill_create_ip", "127.0.0.1");
-		request.put("notify_url", "https://www.tengmei360.com/skeleton-web/notify");
+		request.put("notify_url", "https://www.tengmei360.com/wechat/payment/notify");
 		request.put("trade_type", "JSAPI");
 		request.put("openid", "oVxv2wFnV7u-PEHwOSHb7fJ_a00E");
 		String sign = signatureService.getSign(request);

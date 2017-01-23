@@ -107,7 +107,6 @@ public class PaymentServiceImpl implements PaymentService {
 		try {
 			KeyStore keyStore = KeyStore.getInstance("PKCS12");
 			FileInputStream instream = new FileInputStream(new File(certLocation));
-			System.out.println(">>>>>>>>>>>>>" + mchid);
 			keyStore.load(instream, mchid.toCharArray());//
 			instream.close();
 			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mchid.toCharArray()).build();
