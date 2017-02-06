@@ -40,7 +40,7 @@ public class PaymentServiceTest {
 	@Test
 	public void testCreateUnifiedOrderMapOfStringObject() {
 
-		ProductOrder order = productOrderService.findById(18L);
+		ProductOrder order = productOrderService.findById(2L);
 		Map<String, Object> request = new HashMap<String, Object>();
 		request.put("appid", appID);
 		request.put("mch_id", mchid);

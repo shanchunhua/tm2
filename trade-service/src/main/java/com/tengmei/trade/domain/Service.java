@@ -30,7 +30,7 @@ public class Service extends BaseEntity {
 	@JoinColumn(name="store_id")
 	private Store store;
 
-	private Boolean deleted=false;
+	private Boolean deleted=false;	
 	public Boolean getDeleted() {
 		return deleted;
 	}
