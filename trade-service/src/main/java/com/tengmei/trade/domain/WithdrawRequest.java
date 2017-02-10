@@ -21,6 +21,17 @@ public class WithdrawRequest extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "suppiler_id")
 	private Supplier supplier;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private WechatUser user;
+
+	public WechatUser getUser() {
+		return user;
+	}
+
+	public void setUser(WechatUser user) {
+		this.user = user;
+	}
 
 	public Supplier getSupplier() {
 		return supplier;

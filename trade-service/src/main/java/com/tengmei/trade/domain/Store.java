@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * 店铺实体类
@@ -34,11 +36,14 @@ public class Store extends BaseEntity implements Serializable {
 	private String contact;
 
 	private String cellphone;
-	
+
 	private String banner1;
 	private String banner2;
 	private String banner3;
-	
+	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "store")
+	// @Transient
+	private StoreWallet wallet = new StoreWallet();
+
 	public String getBanner1() {
 		return banner1;
 	}
@@ -82,8 +87,6 @@ public class Store extends BaseEntity implements Serializable {
 	public String getName() {
 		return name;
 	}
-
-
 
 	public Set<Supplier> getSuppliers() {
 		return suppliers;

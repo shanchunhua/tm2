@@ -1,7 +1,5 @@
 package com.tengmei.trade.rest;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.HairStyle;
-import com.tengmei.trade.domain.Store;
-import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.StoreService;
 import com.tengmei.wechat.service.HairStyleService;
 

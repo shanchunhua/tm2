@@ -6,7 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+/**
+ * 发品端的订单实体
+ * @author sam
+ *
+ */
 @Entity
 public class ProductOrder extends BaseEntity {
 

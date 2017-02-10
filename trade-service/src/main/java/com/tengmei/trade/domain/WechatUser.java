@@ -3,6 +3,8 @@ package com.tengmei.trade.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.tengmei.wechat.vo.UserInfo;
@@ -18,10 +20,13 @@ public class WechatUser extends BaseEntity implements Serializable {
 	private String openid;
 	private static final long serialVersionUID = 1L;
 	private UserType type;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private WechatUser parent;
 	@Transient
 	private UserInfo userInfo;
-	
+
 	public UserInfo getUserInfo() {
 		return userInfo;
 	}

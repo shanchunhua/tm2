@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,22 +17,29 @@ import com.tengmei.trade.domain.GenderType;
 import com.tengmei.trade.domain.HairStyle;
 import com.tengmei.trade.domain.LengthType;
 import com.tengmei.trade.domain.StyleType;
+import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.domain.WithdrawRequest;
 import com.tengmei.trade.repository.HairStyleRepository;
+import com.tengmei.trade.repository.WechatUserRepository;
+import com.tengmei.trade.repository.WithdrawRequestRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TradeServiceApplication.class })
 @Transactional
-public class HairStyleRepositoryTest {
+public class WithdrawRequestRepositoryTest {
 	@Autowired
-	private HairStyleRepository hairStyleRepository;
-
+	private WithdrawRequestRepository withdrawRequestRepository;
+	@Autowired
+	private WechatUserRepository wechatUserRepository;
 	@Test
-	public void testFindByExample() {
-		HairStyle hairStyle = new HairStyle();
-		hairStyle.setGender(GenderType.FEMALE);
-		Example<HairStyle> example = Example.of(hairStyle);
+	public void testFindByUser() {
+		WechatUser user=wechatUserRepository.findOne(4L);
+		
 		PageRequest pageable = new PageRequest(0, 10);
-		hairStyleRepository.findAll(example, pageable);
+		Page<WithdrawRequest> result = withdrawRequestRepository.findByUser(user, pageable);
+		for (WithdrawRequest withdrawRequest : result.getContent()) {
+			System.out.println(withdrawRequest.getAmount());
+		}
 	}
 
 	@Test
@@ -43,7 +51,7 @@ public class HairStyleRepositoryTest {
 			hairStyle.setLength(LengthType.LONG);
 			hairStyle.setStyle(StyleType.STRAIGHT);
 			hairStyle.setImage("http://n.sinaimg.cn/sports/transform/20170207/rLPf-fyafcyx7396355.jpg");
-			hairStyleRepository.save(hairStyle);
+//			hairStyleRepository.save(hairStyle);
 		}
 	}
 
