@@ -1,5 +1,5 @@
 package com.tengmei.trade.domain;
 
 public enum UserType {
-	SUPPLIER, STORE_OWNER
+	SUPPLIER, STORE_OWNER, CUSTOMER, STAFF
 }

@@ -28,7 +28,7 @@ public class ProductController {
 	public RestResult<List<Product>> getProducts(HttpServletRequest request) {
 		
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		Store store=storeService.findStoreByUser(user);
+		Store store=storeService.findStoreByOwner(user);
 		List<Product> products=productService.findBySuppliers(store.getSuppliers());
 		
 		// TODO test only

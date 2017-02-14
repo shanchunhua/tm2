@@ -14,4 +14,8 @@ public interface HairStyleRepository extends JpaRepository<HairStyle, Long> {
 
 	Page<HairStyle> findByStoreIsNullAndDeleted(Boolean deleted, Pageable pageable);
 
+	int countByStoreIsNullAndDeleted(boolean b);
+
+	int countByStoreAndDeleted(Store store,boolean deleted);
+
 }

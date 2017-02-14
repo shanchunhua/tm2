@@ -13,4 +13,17 @@ public interface HairStyleService {
 
 	void create(HairStyle hairStyle);
 
+	/**
+	 * 查询全局的时尚发型数量
+	 * 
+	 * @return
+	 */
+	int countGlobalHairStyle();
+	/**
+	 * 统计店铺发型数量
+	 * @param store
+	 * @return
+	 */
+	int countStoreHairStyle(Store store);
+
 }

@@ -44,6 +44,26 @@ public class Store extends BaseEntity implements Serializable {
 	// @Transient
 	private StoreWallet wallet = new StoreWallet();
 
+	@ManyToOne
+	@JoinColumn(name = "chain_id")
+	private Chain chain;
+
+	public StoreWallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(StoreWallet wallet) {
+		this.wallet = wallet;
+	}
+
+	public Chain getChain() {
+		return chain;
+	}
+
+	public void setChain(Chain chain) {
+		this.chain = chain;
+	}
+
 	public String getBanner1() {
 		return banner1;
 	}

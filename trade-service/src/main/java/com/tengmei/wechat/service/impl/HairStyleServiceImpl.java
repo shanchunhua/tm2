@@ -31,13 +31,23 @@ public class HairStyleServiceImpl implements HairStyleService {
 
 	@Override
 	public Page<HairStyle> getStoreHairStyle(Store store, Pageable pageable) {
-		
-		return hairStyleRepository.findByStoreAndDeleted(store, false,pageable);
+
+		return hairStyleRepository.findByStoreAndDeleted(store, false, pageable);
 	}
 
 	@Override
 	public void create(HairStyle hairStyle) {
 		hairStyleRepository.save(hairStyle);
+	}
+
+	@Override
+	public int countGlobalHairStyle() {
+		return hairStyleRepository.countByStoreIsNullAndDeleted(false);
+	}
+
+	@Override
+	public int countStoreHairStyle(Store store) {
+		return hairStyleRepository.countByStoreAndDeleted(store, false);
 	}
 
 }

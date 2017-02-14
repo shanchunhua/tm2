@@ -11,6 +11,8 @@ import com.tengmei.trade.domain.Store;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Long> {
-	List<Staff> findByStoreAndDeleted(Store store,Boolean deleted); 
+	List<Staff> findByStoreAndDeleted(Store store, Boolean deleted);
+
+	int countByStoreAndDeleted(Store store, Boolean deleted);
 
 }

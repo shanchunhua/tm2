@@ -47,7 +47,7 @@ public class ProductOrderController {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		List<ProductOrder> orders = null;
 		if (user.getType() == UserType.STORE_OWNER) {
-			orders = productOrderService.findOrderByStore(storeService.findStoreByUser(user));
+			orders = productOrderService.findOrderByStore(storeService.findStoreByOwner(user));
 		} else {
 			orders = productOrderService.findOrderBySupplier(supplierService.findSupplier(user));
 		}
@@ -70,7 +70,7 @@ public class ProductOrderController {
 		RestResult<List<OrderSummaryBySupplier>> result = new RestResult<List<OrderSummaryBySupplier>>();
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		List<OrderSummaryBySupplier> summaries = productOrderService
-				.getOrderSummaryBySuppliers(storeService.findStoreByUser(user).getSuppliers());
+				.getOrderSummaryBySuppliers(storeService.findStoreByOwner(user).getSuppliers());
 		result.setData(summaries);
 		return result;
 	}

@@ -1,10 +1,13 @@
 package com.tengmei.trade.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tengmei.trade.domain.Chain;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
@@ -26,7 +29,11 @@ public class StoreServiceImpl implements StoreService {
 		storeRepository.save(store);
 	}
 	@Override
-	public Store findStoreByUser(WechatUser user){
+	public Store findStoreByOwner(WechatUser user){
 		return storeRepository.findByUser(user);
+	}
+	@Override
+	public List<Store> findByChain(Chain chain) {
+		return storeRepository.findByChain(chain);
 	}
 }
