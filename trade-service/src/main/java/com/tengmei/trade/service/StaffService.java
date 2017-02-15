@@ -1,5 +1,6 @@
 package com.tengmei.trade.service;
 
+import com.tengmei.trade.domain.Staff;
 import com.tengmei.trade.domain.Store;
 
 public interface StaffService {
@@ -10,4 +11,6 @@ public interface StaffService {
 	 * @return
 	 */
 	public int countByStore(Store store);
+
+	public Staff create(Staff staff);
 }
