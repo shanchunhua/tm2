@@ -13,4 +13,6 @@ public interface WechatUserService {
 	public void create(WechatUser entity);
 	
 	public WechatUser findByOpenid(String openid);
+
+	public WechatUser findById(Long id);
 }

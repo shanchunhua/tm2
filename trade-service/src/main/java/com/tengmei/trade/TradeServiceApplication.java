@@ -35,19 +35,21 @@ public class TradeServiceApplication {
 
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**");
+				registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE");
 			}
 
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/productindex").addPathPatterns("/main").addPathPatterns("/rest/**")
+				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/productindex")
+						.addPathPatterns("/main").addPathPatterns("/rest/**")
 						.excludePathPatterns("/wechat/oauth2", "/static/**");
 				super.addInterceptors(registry);
 			}
+
 			@Override
 			public void configurePathMatch(PathMatchConfigurer configurer) {
-			    super.configurePathMatch(configurer);
-			    configurer.setUseSuffixPatternMatch(false);
+				super.configurePathMatch(configurer);
+				configurer.setUseSuffixPatternMatch(false);
 			}
 		};
 	}

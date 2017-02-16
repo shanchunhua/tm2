@@ -1,5 +1,7 @@
 package com.tengmei.trade.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,21 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public Staff create(Staff staff) {
 		return staffRepository.save(staff);
+	}
+
+	@Override
+	public List<Staff> findByStore(Store store) {
+		return staffRepository.findByStoreAndDeleted(store, false);
+	}
+
+	@Override
+	public Staff findById(Long id) {
+		return staffRepository.findOne(id);
+	}
+
+	@Override
+	public void delete(Long id) {
+		staffRepository.delete(id);
 	}
 
 }
