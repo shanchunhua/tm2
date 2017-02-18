@@ -2,6 +2,7 @@ package com.tengmei.trade.rest;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,5 +117,16 @@ public class StoreController {
 		map.put("storeHairStyleCount", storeHairStyleCount);
 		map.put("chainCount", chainCount);
 		return new RestResult<Map<String, Object>>(map);
+	}
+
+	@RequestMapping("/chain")
+	public RestResult<List<Store>> findChainStores(HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		user = wechatUserService.findByOpenid(user.getOpenid());
+		Store store = user.getStore();
+		if (store.getChain() != null) {
+			List<Store> stores = storeService.findByChain(store.getChain());
+		}
+		return null;
 	}
 }
