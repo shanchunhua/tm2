@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.tengmei.trade.domain.Service;
+import com.tengmei.trade.domain.ServiceCatalog;
 import com.tengmei.trade.domain.Store;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
-	List<Service> findByStoreAndDeleted(Store store,Boolean deleted);
+	List<Service> findByStoreAndDeleted(Store store, Boolean deleted);
+
+	List<Service> findByStoreAndCatalogAndDeleted(Store store, ServiceCatalog catalog, boolean b);
 
 }

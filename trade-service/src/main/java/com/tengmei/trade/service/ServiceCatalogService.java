@@ -6,4 +6,6 @@ import com.tengmei.trade.domain.ServiceCatalog;
 
 public interface ServiceCatalogService {
 	List<ServiceCatalog> findAll();
+
+	ServiceCatalog findById(Long id);
 }

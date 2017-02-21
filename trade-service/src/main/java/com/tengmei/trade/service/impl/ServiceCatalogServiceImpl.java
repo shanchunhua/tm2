@@ -19,4 +19,9 @@ public class ServiceCatalogServiceImpl implements ServiceCatalogService {
 		return serviceCatalogRepository.findAll();
 	}
 
+	@Override
+	public ServiceCatalog findById(Long id) {
+		return serviceCatalogRepository.findOne(id);
+	}
+
 }
