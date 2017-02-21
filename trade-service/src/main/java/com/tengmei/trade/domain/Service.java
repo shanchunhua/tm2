@@ -22,10 +22,15 @@ public class Service extends BaseEntity {
 	@Column(precision = 10, scale = 2)
 	private BigDecimal levelTwoPrice;
 	
-	//分销佣金比例
+	//1級分销佣金比例
 	@Column(precision = 5, scale = 2)
-	private BigDecimal commissionRate;
-	
+	private BigDecimal commissionRate1;
+	//2級分销佣金比例
+	@Column(precision = 5, scale = 2)
+	private BigDecimal commissionRate2;
+	//3級分销佣金比例
+	@Column(precision = 5, scale = 2)
+	private BigDecimal commissionRate3;
 	@ManyToOne
 	@JoinColumn(name="store_id")
 	private Store store;
@@ -87,12 +92,29 @@ public class Service extends BaseEntity {
 		this.levelTwoPrice = levelTwoPrice;
 	}
 
-	public BigDecimal getCommissionRate() {
-		return commissionRate;
+
+	public BigDecimal getCommissionRate1() {
+		return commissionRate1;
 	}
 
-	public void setCommissionRate(BigDecimal commissionRate) {
-		this.commissionRate = commissionRate;
+	public void setCommissionRate1(BigDecimal commissionRate1) {
+		this.commissionRate1 = commissionRate1;
+	}
+
+	public BigDecimal getCommissionRate2() {
+		return commissionRate2;
+	}
+
+	public void setCommissionRate2(BigDecimal commissionRate2) {
+		this.commissionRate2 = commissionRate2;
+	}
+
+	public BigDecimal getCommissionRate3() {
+		return commissionRate3;
+	}
+
+	public void setCommissionRate3(BigDecimal commissionRate3) {
+		this.commissionRate3 = commissionRate3;
 	}
 
 	public Store getStore() {
