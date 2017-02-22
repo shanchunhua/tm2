@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.Service;
+import com.tengmei.trade.domain.Staff;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.ServiceCatalogService;
@@ -37,6 +38,15 @@ public class ServiceController {
 		return new RestResult<Store>();
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public RestResult<Service> load(@PathVariable Long id) {
+
+		RestResult<Service> result = new RestResult<Service>();
+
+		result.setData(serviceService.findById(id));
+		return result;
+	}
+
 	@RequestMapping(value = "/catalog/{id}", method = RequestMethod.GET)
 	public RestResult<List<Service>> list(@PathVariable Long id, HttpServletRequest request) {
 
@@ -46,6 +56,14 @@ public class ServiceController {
 
 		RestResult<List<Service>> result = new RestResult<>(services);
 
+		return result;
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public RestResult<Service> del(@PathVariable Long id) {
+
+		RestResult<Service> result = new RestResult<Service>();
+		serviceService.delete(id);
 		return result;
 	}
 }

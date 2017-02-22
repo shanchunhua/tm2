@@ -10,4 +10,8 @@ public interface ServiceService {
 	public Service create(Service service);
 
 	public List<Service> findByStoreAndCatalog(Store store, ServiceCatalog catalog);
+
+	public Service findById(Long id);
+
+	public void delete(Long id);
 }

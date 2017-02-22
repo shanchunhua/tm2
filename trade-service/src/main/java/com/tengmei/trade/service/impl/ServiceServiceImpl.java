@@ -19,6 +19,7 @@ public class ServiceServiceImpl implements ServiceService {
 	ServiceRepository serviceRepository;
 	@Autowired
 	ServiceCatalogRepository serviceCatalogRepository;
+
 	@Override
 	public Service create(Service service) {
 		service.setCatalog(serviceCatalogRepository.findOne(service.getCatalog().getId()));
@@ -27,7 +28,19 @@ public class ServiceServiceImpl implements ServiceService {
 
 	@Override
 	public List<Service> findByStoreAndCatalog(Store store, ServiceCatalog catalog) {
-		return serviceRepository.findByStoreAndCatalogAndDeleted(store, catalog,false);
+		return serviceRepository.findByStoreAndCatalogAndDeleted(store, catalog, false);
+	}
+
+	@Override
+	public Service findById(Long id) {
+		return serviceRepository.findOne(id);
+	}
+
+	@Override
+	public void delete(Long id) {
+		Service service = serviceRepository.findOne(id);
+		service.setDeleted(true);
+		serviceRepository.save(service);
 	}
 
 }

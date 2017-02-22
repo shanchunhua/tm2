@@ -40,7 +40,9 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	public void delete(Long id) {
-		staffRepository.delete(id);
+		Staff staff = staffRepository.findOne(id);
+		staff.setDeleted(true);
+		staffRepository.save(staff);
 	}
 
 }
