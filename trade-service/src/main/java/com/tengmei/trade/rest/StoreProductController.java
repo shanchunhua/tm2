@@ -2,6 +2,7 @@ package com.tengmei.trade.rest;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -22,20 +23,22 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tengmei.trade.domain.GenderType;
 import com.tengmei.trade.domain.Staff;
+import com.tengmei.trade.domain.StoreProduct;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.StaffService;
+import com.tengmei.trade.service.StoreProductService;
 import com.tengmei.trade.service.WechatUserService;
 
 @RestController
-@RequestMapping("/rest/staffs")
-public class StaffController {
+@RequestMapping("/rest/storeproducts")
+public class StoreProductController {
 	@Autowired
-	StaffService staffService;
+	StoreProductService storeProductService;
 	@Autowired
 	WechatUserService wechatUserService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public RestResult<Staff> createStaff(MultipartHttpServletRequest request) throws ParseException {
+	public RestResult<StoreProduct> create(MultipartHttpServletRequest request) throws ParseException {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		user = wechatUserService.findById(user.getId());
 		Iterator<String> itr = request.getFileNames();
@@ -46,75 +49,43 @@ public class StaffController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Staff staff = new Staff();
+		StoreProduct storeProduct = new StoreProduct();
 		String id = request.getParameter("id");
 		if (id != null) {
-			staff = staffService.findById(Long.valueOf(id));
+			storeProduct = storeProductService.findById(Long.valueOf(id));
 		}
-		staff.setName(request.getParameter("name"));
-		staff.setGender(GenderType.valueOf(request.getParameter("gender")));
-		staff.setLevel(Integer.valueOf(request.getParameter("level")));
-		staff.setUser(user);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		staff.setBirthday(format.parse(request.getParameter("birthday")));
-		staff.setStore(user.getStore());
-		staff.setDescription(request.getParameter("description"));
-		staff = staffService.create(staff);
+		storeProduct.setName(request.getParameter("name"));
+		storeProduct.setCommissionRate(new BigDecimal(request.getParameter("commissionRate")));
+		storeProduct.setPrice(new BigDecimal(request.getParameter("price")));
+		storeProduct = storeProductService.create(storeProduct);
 
-		RestResult<Staff> result = new RestResult<Staff>(staff);
-		return result;
-	}
-
-	@RequestMapping(value = "/level/{level}", method = RequestMethod.GET)
-	public RestResult<List<Staff>> list(@PathVariable Integer level, HttpServletRequest request) {
-
-		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		user = wechatUserService.findById(user.getId());
-
-		RestResult<List<Staff>> result = new RestResult<>();
-
-		List<Staff> staffs = staffService.findByStore(user.getStore());
-		Collections.sort(staffs, new Comparator<Staff>() {
-			public int compare(Staff o1, Staff o2) {
-				if (o1.getLevel() == level && o2.getLevel() == level) {
-					return o2.getId().intValue() - o1.getId().intValue();
-				} else {
-					if (o1.getLevel() == level) {
-						return 1;
-					} else {
-						return -1;
-					}
-				}
-			};
-		});
-		result.setData(staffs);
+		RestResult<StoreProduct> result = new RestResult<StoreProduct>(storeProduct);
 		return result;
 	}
 
 	/**
-	 * 查询特定级别的staff
 	 * 
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public RestResult<List<Staff>> list(HttpServletRequest request) {
+	public RestResult<List<StoreProduct>> list(HttpServletRequest request) {
 
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		user = wechatUserService.findById(user.getId());
 
-		RestResult<List<Staff>> result = new RestResult<>();
+		RestResult<List<StoreProduct>> result = new RestResult<>();
 
-		result.setData(staffService.findByStore(user.getStore()));
+		result.setData(storeProductService.findByStore(user.getStore()));
 		return result;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public RestResult<Staff> load(@PathVariable Long id) {
+	public RestResult<StoreProduct> load(@PathVariable Long id) {
 
-		RestResult<Staff> result = new RestResult<Staff>();
+		RestResult<StoreProduct> result = new RestResult<StoreProduct>();
 
-		result.setData(staffService.findById(id));
+		result.setData(storeProductService.findById(id));
 		return result;
 	}
 
@@ -122,7 +93,7 @@ public class StaffController {
 	public RestResult<Staff> del(@PathVariable Long id) {
 
 		RestResult<Staff> result = new RestResult<Staff>();
-		staffService.delete(id);
+		storeProductService.delete(id);
 
 		return result;
 	}
