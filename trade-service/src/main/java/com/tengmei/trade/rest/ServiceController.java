@@ -39,7 +39,7 @@ public class ServiceController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public RestResult<List<Service>> getAll(@RequestBody Service service, HttpServletRequest request) {
+	public RestResult<List<Service>> getAll(HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		Store store = wechatUserService.findById(user.getId()).getStore();
 		return new RestResult<List<Service>>(serviceService.findByStore(store));

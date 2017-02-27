@@ -1,7 +1,6 @@
 package com.tengmei.trade.domain;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +19,7 @@ public class TimesCard extends BaseEntity {
 
 	private Integer times;
 
-	private Date validDate;
-	
+	private Integer period;
 	//
 	@ManyToOne
 	@JoinColumn(name="service_id")
@@ -37,12 +35,12 @@ public class TimesCard extends BaseEntity {
 	}
 
 
-	public Date getValidDate() {
-		return validDate;
+	public Integer getPeriod() {
+		return period;
 	}
 
-	public void setValidDate(Date validDate) {
-		this.validDate = validDate;
+	public void setPeriod(Integer period) {
+		this.period = period;
 	}
 
 	public Integer getTimes() {
