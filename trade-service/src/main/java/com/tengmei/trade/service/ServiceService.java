@@ -14,4 +14,6 @@ public interface ServiceService {
 	public Service findById(Long id);
 
 	public void delete(Long id);
+
+	public List<Service> findByStore(Store store);
 }

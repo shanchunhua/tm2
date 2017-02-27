@@ -43,4 +43,9 @@ public class ServiceServiceImpl implements ServiceService {
 		serviceRepository.save(service);
 	}
 
+	@Override
+	public List<Service> findByStore(Store store) {
+		return serviceRepository.findByStoreAndDeleted(store, false);
+	}
+
 }

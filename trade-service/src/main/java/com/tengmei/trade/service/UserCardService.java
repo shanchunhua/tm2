@@ -9,7 +9,7 @@ import com.tengmei.trade.domain.UserTimesCard;
 import com.tengmei.trade.domain.WechatUser;
 
 public interface UserCardService {
-	public List<UserTimesCard> getValidTimesCards(WechatUser user, Service service, int level);
+	public List<UserTimesCard> getValidTimesCards(WechatUser user, Service service);
 
 	public List<UserDiscountCard> getValidCatalogDiscountCard(WechatUser user, ServiceCatalog catalog);
 }

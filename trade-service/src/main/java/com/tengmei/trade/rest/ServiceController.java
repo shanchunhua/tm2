@@ -30,12 +30,19 @@ public class ServiceController {
 	ServiceCatalogService serviceCatalogService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public RestResult<Store> create(@RequestBody Service service, HttpServletRequest request) {
+	public RestResult<Service> create(@RequestBody Service service, HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		Store store = wechatUserService.findById(user.getId()).getStore();
 		service.setStore(store);
 		serviceService.create(service);
-		return new RestResult<Store>();
+		return new RestResult<Service>();
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public RestResult<List<Service>> getAll(@RequestBody Service service, HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		Store store = wechatUserService.findById(user.getId()).getStore();
+		return new RestResult<List<Service>>(serviceService.findByStore(store));
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -58,7 +65,7 @@ public class ServiceController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public RestResult<Service> del(@PathVariable Long id) {
 

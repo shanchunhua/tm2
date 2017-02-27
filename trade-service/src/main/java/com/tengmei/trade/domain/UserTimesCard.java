@@ -11,6 +11,7 @@ public class UserTimesCard extends BaseEntity {
 
 	private Date validDate;
 
+	 
 	@ManyToOne
 	@JoinColumn(name = "card_id")
 	private TimesCard timesCard;

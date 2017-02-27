@@ -3,6 +3,7 @@ package com.tengmei.trade.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tengmei.trade.domain.Service;
 import com.tengmei.trade.domain.ServiceCatalog;
@@ -12,7 +13,8 @@ import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.repository.UserDiscountCardRepository;
 import com.tengmei.trade.repository.UserTimesCardRepository;
 import com.tengmei.trade.service.UserCardService;
-
+@org.springframework.stereotype.Service
+@Transactional
 public class UserCardServiceImpl implements UserCardService {
 	@Autowired
 	UserTimesCardRepository userTimesCardRepository;
@@ -20,8 +22,8 @@ public class UserCardServiceImpl implements UserCardService {
 	UserDiscountCardRepository userDiscountCardRepository;
 
 	@Override
-	public List<UserTimesCard> getValidTimesCards(WechatUser user, Service service, int level) {
-		return userTimesCardRepository.findByUserAndServiceAndLevel(user, service, level);
+	public List<UserTimesCard> getValidTimesCards(WechatUser user, Service service) {
+		return userTimesCardRepository.findByUserAndTimesCard_Service(user, service);
 	}
 
 	@Override
