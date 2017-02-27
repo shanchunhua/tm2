@@ -54,6 +54,7 @@ public class StoreProductController {
 		if (id != null) {
 			storeProduct = storeProductService.findById(Long.valueOf(id));
 		}
+		storeProduct.setStore(user.getStore());
 		storeProduct.setName(request.getParameter("name"));
 		storeProduct.setCommissionRate(new BigDecimal(request.getParameter("commissionRate")));
 		storeProduct.setPrice(new BigDecimal(request.getParameter("price")));

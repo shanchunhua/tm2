@@ -39,12 +39,14 @@ public class StaffController {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		user = wechatUserService.findById(user.getId());
 		Iterator<String> itr = request.getFileNames();
-		MultipartFile mpf = request.getFile(itr.next());
-		System.out.println(mpf.getOriginalFilename() + " uploaded!");
-		try {
-			FileUtils.copyInputStreamToFile(mpf.getInputStream(), new File("/home/sam/1.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (itr.hasNext()) {
+			MultipartFile mpf = request.getFile(itr.next());
+			System.out.println(mpf.getOriginalFilename() + " uploaded!");
+			try {
+				FileUtils.copyInputStreamToFile(mpf.getInputStream(), new File("/home/sam/1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		Staff staff = new Staff();
 		String id = request.getParameter("id");
@@ -76,7 +78,8 @@ public class StaffController {
 		List<Staff> staffs = staffService.findByStore(user.getStore());
 		Collections.sort(staffs, new Comparator<Staff>() {
 			public int compare(Staff o1, Staff o2) {
-				if (o1.getLevel() == level && o2.getLevel() == level) {
+				if ((o1.getLevel() == level && o2.getLevel() == level)
+						|| (o1.getLevel() != level && o2.getLevel() != level)) {
 					return o2.getId().intValue() - o1.getId().intValue();
 				} else {
 					if (o1.getLevel() == level) {
