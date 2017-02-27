@@ -15,22 +15,30 @@ public class Service extends BaseEntity {
 	private ServiceCatalog catalog;
 	
 	@Column(precision = 10, scale = 2)
-	private BigDecimal levelOnePrice;
+	private BigDecimal price;
 	
-	@Column(precision = 10, scale = 2)
-	private BigDecimal levelThreePrice;
-	@Column(precision = 10, scale = 2)
-	private BigDecimal levelTwoPrice;
+	private Integer level;
 	
-	//1級分销佣金比例
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	//分销佣金比例
 	@Column(precision = 5, scale = 2)
-	private BigDecimal commissionRate1;
-	//2級分销佣金比例
-	@Column(precision = 5, scale = 2)
-	private BigDecimal commissionRate2;
-	//3級分销佣金比例
-	@Column(precision = 5, scale = 2)
-	private BigDecimal commissionRate3;
+	private BigDecimal commissionRate;
+	
 	@ManyToOne
 	@JoinColumn(name="store_id")
 	private Store store;
@@ -68,53 +76,13 @@ public class Service extends BaseEntity {
 		this.catalog = catalog;
 	}
 
-	public BigDecimal getLevelOnePrice() {
-		return levelOnePrice;
+
+	public BigDecimal getCommissionRate() {
+		return commissionRate;
 	}
 
-	public void setLevelOnePrice(BigDecimal levelOnePrice) {
-		this.levelOnePrice = levelOnePrice;
-	}
-
-	public BigDecimal getLevelThreePrice() {
-		return levelThreePrice;
-	}
-
-	public void setLevelThreePrice(BigDecimal levelThreePrice) {
-		this.levelThreePrice = levelThreePrice;
-	}
-
-	public BigDecimal getLevelTwoPrice() {
-		return levelTwoPrice;
-	}
-
-	public void setLevelTwoPrice(BigDecimal levelTwoPrice) {
-		this.levelTwoPrice = levelTwoPrice;
-	}
-
-
-	public BigDecimal getCommissionRate1() {
-		return commissionRate1;
-	}
-
-	public void setCommissionRate1(BigDecimal commissionRate1) {
-		this.commissionRate1 = commissionRate1;
-	}
-
-	public BigDecimal getCommissionRate2() {
-		return commissionRate2;
-	}
-
-	public void setCommissionRate2(BigDecimal commissionRate2) {
-		this.commissionRate2 = commissionRate2;
-	}
-
-	public BigDecimal getCommissionRate3() {
-		return commissionRate3;
-	}
-
-	public void setCommissionRate3(BigDecimal commissionRate3) {
-		this.commissionRate3 = commissionRate3;
+	public void setCommissionRate(BigDecimal commissionRate) {
+		this.commissionRate = commissionRate;
 	}
 
 	public Store getStore() {

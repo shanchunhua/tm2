@@ -21,6 +21,21 @@ public class TimesCard extends BaseEntity {
 	private Integer times;
 
 	private Date validDate;
+	
+	//
+	@ManyToOne
+	@JoinColumn(name="service_id")
+	private Service service;
+	
+
+	public Service getService() {
+		return service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
+	}
+
 
 	public Date getValidDate() {
 		return validDate;
