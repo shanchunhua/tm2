@@ -8,7 +8,7 @@ import com.tengmei.trade.domain.Store;
 
 public interface ServiceService {
 	public Service create(Service service);
-
+	public void create(List<Service> services);
 	public List<Service> findByStoreAndCatalog(Store store, ServiceCatalog catalog);
 
 	public Service findById(Long id);

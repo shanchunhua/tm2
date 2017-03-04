@@ -12,6 +12,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,18 +23,24 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.tengmei.trade.domain.GenderType;
+import com.tengmei.trade.domain.Service;
 import com.tengmei.trade.domain.Staff;
 import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.service.ServiceService;
 import com.tengmei.trade.service.StaffService;
 import com.tengmei.trade.service.WechatUserService;
+import com.tengmei.wechat.service.impl.BasicServiceImpl;
 
 @RestController
 @RequestMapping("/rest/staffs")
 public class StaffController {
+	private static final Logger logger = LoggerFactory.getLogger(StaffController.class);
 	@Autowired
 	StaffService staffService;
 	@Autowired
 	WechatUserService wechatUserService;
+	@Autowired
+	ServiceService serviceService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResult<Staff> createStaff(MultipartHttpServletRequest request) throws ParseException {
@@ -67,25 +75,29 @@ public class StaffController {
 		return result;
 	}
 
-	@RequestMapping(value = "/level/{level}", method = RequestMethod.GET)
-	public RestResult<List<Staff>> list(@PathVariable Integer level, HttpServletRequest request) {
+	@RequestMapping(value = "/pickstaff/{id}", method = RequestMethod.GET)
+	public RestResult<List<Staff>> list(@PathVariable Long id, HttpServletRequest request) {
 
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		user = wechatUserService.findById(user.getId());
-
+		Service service = serviceService.findById(id);
+		Integer level = service.getLevel();
+		logger.debug("level:" + level);
 		RestResult<List<Staff>> result = new RestResult<>();
 
 		List<Staff> staffs = staffService.findByStore(user.getStore());
 		Collections.sort(staffs, new Comparator<Staff>() {
 			public int compare(Staff o1, Staff o2) {
+				System.out.println(o1.getName() + "/" + o2.getName());
 				if ((o1.getLevel() == level && o2.getLevel() == level)
 						|| (o1.getLevel() != level && o2.getLevel() != level)) {
-					return o2.getId().intValue() - o1.getId().intValue();
+					System.out.println("" + (o2.getId().intValue() - o1.getId().intValue()));
+					return o1.getId().intValue() - o2.getId().intValue();
 				} else {
 					if (o1.getLevel() == level) {
-						return 1;
-					} else {
 						return -1;
+					} else {
+						return 1;
 					}
 				}
 			};

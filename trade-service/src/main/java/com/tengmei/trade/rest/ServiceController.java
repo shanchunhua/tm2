@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.Service;
-import com.tengmei.trade.domain.Staff;
+import com.tengmei.trade.domain.ServiceCatalog;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.rest.vo.ServiceVo;
 import com.tengmei.trade.service.ServiceCatalogService;
 import com.tengmei.trade.service.ServiceService;
 import com.tengmei.trade.service.WechatUserService;
@@ -30,11 +31,16 @@ public class ServiceController {
 	ServiceCatalogService serviceCatalogService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public RestResult<Service> create(@RequestBody Service service, HttpServletRequest request) {
+	public RestResult<Service> create(@RequestBody ServiceVo vo, HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		Store store = wechatUserService.findById(user.getId()).getStore();
-		service.setStore(store);
-		serviceService.create(service);
+		ServiceCatalog catalog = serviceCatalogService.findById(vo.getCid());
+		List<Service> services = vo.getServices();
+		for (Service service : services) {
+			service.setCatalog(catalog);
+			service.setStore(store);
+		}
+		serviceService.create(services);
 		return new RestResult<Service>();
 	}
 

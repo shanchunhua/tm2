@@ -12,4 +12,6 @@ public interface UserCardService {
 	public List<UserTimesCard> getValidTimesCards(WechatUser user, Service service);
 
 	public List<UserDiscountCard> getValidCatalogDiscountCard(WechatUser user, ServiceCatalog catalog);
+
+	public List<UserDiscountCard> findDiscountCardByUserAndCatalog(WechatUser user, ServiceCatalog catalog);
 }

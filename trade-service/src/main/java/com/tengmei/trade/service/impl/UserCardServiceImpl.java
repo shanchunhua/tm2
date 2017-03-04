@@ -32,4 +32,10 @@ public class UserCardServiceImpl implements UserCardService {
 		return null;
 	}
 
+	@Override
+	public List<UserDiscountCard> findDiscountCardByUserAndCatalog(WechatUser user, ServiceCatalog catalog) {
+		
+		return userDiscountCardRepository.findByUserAndCardItems_catalog(user,catalog);
+	}
+
 }

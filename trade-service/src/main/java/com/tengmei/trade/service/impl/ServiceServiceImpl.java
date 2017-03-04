@@ -48,4 +48,9 @@ public class ServiceServiceImpl implements ServiceService {
 		return serviceRepository.findByStoreAndDeleted(store, false);
 	}
 
+	@Override
+	public void create(List<Service> services) {
+		 serviceRepository.save(services);
+	}
+
 }

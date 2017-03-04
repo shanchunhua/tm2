@@ -2,11 +2,13 @@ package com.tengmei.trade.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 @Entity
 public class UserDiscountCard extends BaseEntity {
 	@Column(precision = 10, scale = 2)
@@ -53,4 +55,15 @@ public class UserDiscountCard extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private WechatUser user;
+	
+	@OneToMany(mappedBy="card")
+	private List<UserDiscountCardItem> cardItems;
+
+	public List<UserDiscountCardItem> getCardItems() {
+		return cardItems;
+	}
+
+	public void setCardItems(List<UserDiscountCardItem> cardItems) {
+		this.cardItems = cardItems;
+	}
 }
