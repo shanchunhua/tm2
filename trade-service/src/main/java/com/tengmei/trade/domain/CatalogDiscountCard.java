@@ -2,11 +2,14 @@ package com.tengmei.trade.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class CatalogDiscountCard extends BaseEntity {
@@ -45,6 +48,16 @@ public class CatalogDiscountCard extends BaseEntity {
 	private Boolean deleted;
 
 	private Date validDate;
+
+	@OneToMany(mappedBy="card",cascade=CascadeType.ALL)
+	private List<CatalogDiscountCardItem> items;
+	public List<CatalogDiscountCardItem> getItems() {
+		return items;
+	}
+
+	public void setItems(List<CatalogDiscountCardItem> items) {
+		this.items = items;
+	}
 
 	public Date getValidDate() {
 		return validDate;

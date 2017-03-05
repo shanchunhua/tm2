@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CatalogDiscountCardItem extends BaseEntity {
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "card_id")
 	CatalogDiscountCard card;
@@ -20,8 +23,6 @@ public class CatalogDiscountCardItem extends BaseEntity {
 
 	@Column(precision = 10, scale = 2)
 	private BigDecimal discount;
-
-
 
 	public BigDecimal getDiscount() {
 		return discount;
