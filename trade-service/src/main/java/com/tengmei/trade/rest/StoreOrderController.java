@@ -6,10 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.domain.CustomerOrder;
+import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Service;
 import com.tengmei.trade.domain.ServiceCatalog;
 import com.tengmei.trade.domain.UserDiscountCard;
@@ -41,5 +44,11 @@ public class StoreOrderController {
 		List<UserDiscountCard> userDiscountCards = userCardService.findDiscountCardByUserAndCatalog(user, catalog);
 
 		return null;
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public RestResult<CustomerOrder> create(@RequestBody ProductOrder productOrder, HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		return new RestResult<CustomerOrder>();
 	}
 }
