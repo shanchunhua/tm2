@@ -1,11 +1,22 @@
 package com.tengmei.trade.service.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tengmei.trade.domain.CatalogDiscountCard;
+import com.tengmei.trade.domain.CatalogDiscountCardItem;
 import com.tengmei.trade.domain.CustomerOrder;
+import com.tengmei.trade.domain.PaymentStatus;
+import com.tengmei.trade.domain.TimesCard;
+import com.tengmei.trade.domain.UserDiscountCard;
+import com.tengmei.trade.domain.UserDiscountCardItem;
+import com.tengmei.trade.domain.UserTimesCard;
 import com.tengmei.trade.repository.CustomerOrderRepository;
+import com.tengmei.trade.repository.UserDiscountCardRepository;
+import com.tengmei.trade.repository.UserTimesCardRepository;
 import com.tengmei.trade.service.CustomerOrderService;
 
 @Service
@@ -13,49 +24,67 @@ import com.tengmei.trade.service.CustomerOrderService;
 public class CustomerOrderServiceImpl implements CustomerOrderService {
 	@Autowired
 	CustomerOrderRepository customerOrderRepository;
+	@Autowired
+	UserTimesCardRepository userTimesCardRepository;
+	@Autowired
+	UserDiscountCardRepository userDiscountCardRepository;
 
 	@Override
 	public CustomerOrder create(CustomerOrder customerOrder) {
-		// if (customerOrder.getPtype() == 1) {
-		// return createServiceOrder(customerOrder);
-		// } else if (customerOrder.getPtype() == 2) {
-		// return createStoreProductOrder(customerOrder);
-		// } else if (customerOrder.getPtype() == 3) {
-		// return createStoreCardOrder(customerOrder);
-		// } else if (customerOrder.getPtype() == 4) {
-		// return createPlatformProductOrder(customerOrder);
-		// }
 		return customerOrderRepository.save(customerOrder);
 	}
 
 	public CustomerOrder pay(CustomerOrder order) {
-
-		return null;
+		// 如果是卡类，需要给用户创建他们的卡实例
+		if (order.getPtype() == 3) {
+			createUserCardInstance(order);
+		}
+		// 如果用户使用次卡结算
+		if (order.getUserTimesCard() != null) {
+			UserTimesCard userTimesCard = order.getUserTimesCard();
+			userTimesCard.setTimes(userTimesCard.getTimes() - 1);
+			userTimesCardRepository.save(userTimesCard);
+		}
+		// 如果用户使用折扣卡结算
+		if (order.getUserDiscountCard() != null) {
+			UserDiscountCard userDiscountCard = order.getUserDiscountCard();
+			userDiscountCard.setLeftAmount(userDiscountCard.getLeftAmount().subtract(order.getFromDiscountCard()));
+			userDiscountCardRepository.save(userDiscountCard);
+		}
+		order.setPaymentStatus(PaymentStatus.PAID);
+		customerOrderRepository.save(order);
+		return order;
 	}
-	// private CustomerOrder createPlatformProductOrder(CustomerOrder
-	// customerOrder) {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// private CustomerOrder createStoreCardOrder(CustomerOrder customerOrder) {
-	// if(customerOrder.getTimesCard()){
-	//
-	// }
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// private CustomerOrder createStoreProductOrder(CustomerOrder
-	// customerOrder) {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// private CustomerOrder createServiceOrder(CustomerOrder customerOrder) {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
+
+	private void createUserCardInstance(CustomerOrder order) {
+		if (order.getTimesCard() != null) {
+			UserTimesCard userTimesCard = new UserTimesCard();
+			TimesCard timesCard = order.getTimesCard();
+			userTimesCard.setTimesCard(timesCard);
+			userTimesCard.setUser(order.getCustomer());
+			// TODO 计算有效期
+			userTimesCard.setValidDate(new Date());
+			userTimesCard.setTimes(timesCard.getTimes());
+			userTimesCardRepository.save(userTimesCard);
+		}
+		if (order.getDiscountCard() != null) {
+			UserDiscountCard userDiscountCard = new UserDiscountCard();
+			CatalogDiscountCard discountCard = order.getDiscountCard();
+			userDiscountCard.setCard(discountCard);
+			userDiscountCard.setUser(order.getCustomer());
+			// TODO 计算有效期
+			userDiscountCard.setValidDate(new Date());
+			userDiscountCard.setLeftAmount(discountCard.getPrice());
+			for (CatalogDiscountCardItem cardItem : discountCard.getItems()) {
+				UserDiscountCardItem item = new UserDiscountCardItem();
+				item.setCard(userDiscountCard);
+				item.setCatalog(cardItem.getCatalog());
+				item.setDiscount(cardItem.getDiscount());
+				userDiscountCard.getCardItems().add(item);
+			}
+			userDiscountCardRepository.save(userDiscountCard);
+		}
+	}
 
 	@Override
 	public CustomerOrder findById(Long id) {

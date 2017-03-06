@@ -1,9 +1,11 @@
 package com.tengmei.trade.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -56,8 +58,8 @@ public class UserDiscountCard extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private WechatUser user;
 	
-	@OneToMany(mappedBy="card")
-	private List<UserDiscountCardItem> cardItems;
+	@OneToMany(mappedBy="card",cascade=CascadeType.ALL)
+	private List<UserDiscountCardItem> cardItems=new ArrayList<UserDiscountCardItem>();
 
 	public List<UserDiscountCardItem> getCardItems() {
 		return cardItems;
