@@ -14,6 +14,7 @@ import com.tengmei.trade.domain.TimesCard;
 import com.tengmei.trade.domain.UserDiscountCard;
 import com.tengmei.trade.domain.UserDiscountCardItem;
 import com.tengmei.trade.domain.UserTimesCard;
+import com.tengmei.trade.repository.CatalogDiscountCardRepository;
 import com.tengmei.trade.repository.CustomerOrderRepository;
 import com.tengmei.trade.repository.UserDiscountCardRepository;
 import com.tengmei.trade.repository.UserTimesCardRepository;
@@ -28,6 +29,8 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 	UserTimesCardRepository userTimesCardRepository;
 	@Autowired
 	UserDiscountCardRepository userDiscountCardRepository;
+	@Autowired
+	CatalogDiscountCardRepository catalogDiscountCardRepository;
 
 	@Override
 	public CustomerOrder create(CustomerOrder customerOrder) {
@@ -69,7 +72,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 		}
 		if (order.getDiscountCard() != null) {
 			UserDiscountCard userDiscountCard = new UserDiscountCard();
-			CatalogDiscountCard discountCard = order.getDiscountCard();
+			CatalogDiscountCard discountCard = catalogDiscountCardRepository.findOne(order.getDiscountCard().getId());
 			userDiscountCard.setCard(discountCard);
 			userDiscountCard.setUser(order.getCustomer());
 			// TODO 计算有效期

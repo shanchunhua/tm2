@@ -15,6 +15,7 @@ import com.tengmei.trade.domain.CustomerOrder;
 import com.tengmei.trade.domain.Service;
 import com.tengmei.trade.domain.ServiceCatalog;
 import com.tengmei.trade.domain.UserDiscountCard;
+import com.tengmei.trade.domain.UserTimesCard;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.CustomerOrderService;
 import com.tengmei.trade.service.ServiceService;
@@ -41,21 +42,30 @@ public class StoreOrderController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(path = "/card/{id}", method = RequestMethod.POST)
-	public RestResult<?> getUserCards(@PathVariable Long id, HttpServletRequest request) {
+	@RequestMapping(path = "/discountcard/{id}", method = RequestMethod.GET)
+	public RestResult<?> getUserDiscountCards(@PathVariable Long id, HttpServletRequest request) {
 		Service service = serviceService.findById(id);
 		ServiceCatalog catalog = service.getCatalog();
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		List<UserDiscountCard> userDiscountCards = userCardService.findDiscountCardByUserAndCatalog(user, catalog);
 
-		return null;
+		return new RestResult<List<UserDiscountCard>>(userDiscountCards);
 	}
+	@RequestMapping(path = "/timescard/{id}", method = RequestMethod.GET)
+	public RestResult<?> getUserTimesCards(@PathVariable Long id, HttpServletRequest request) {
+		Service service = serviceService.findById(id);
+		ServiceCatalog catalog = service.getCatalog();
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		List<UserTimesCard> userTimesCards = userCardService.findTimesCardByUserAndService(user, service);
 
+		return new RestResult<List<UserTimesCard>>(userTimesCards);
+	}
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResult<CustomerOrder> create(@RequestBody CustomerOrder customerOrder, HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		user = wechatUserService.findById(user.getId());
 		customerOrder.setStore(user.getStore());
+		customerOrder.setCustomer(user);
 		customerOrderService.create(customerOrder);
 		return new RestResult<CustomerOrder>(customerOrder);
 	}
