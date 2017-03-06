@@ -57,4 +57,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 	// return null;
 	// }
 
+	@Override
+	public CustomerOrder findById(Long id) {
+		return customerOrderRepository.findOne(id);
+	}
+
 }

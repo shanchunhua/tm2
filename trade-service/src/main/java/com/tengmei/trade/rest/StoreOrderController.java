@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.CustomerOrder;
-import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Service;
 import com.tengmei.trade.domain.ServiceCatalog;
 import com.tengmei.trade.domain.UserDiscountCard;
 import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.service.CustomerOrderService;
 import com.tengmei.trade.service.ServiceService;
 import com.tengmei.trade.service.UserCardService;
+import com.tengmei.trade.service.WechatUserService;
 
 @RestController
 @RequestMapping("/rest/storeorders")
@@ -27,6 +28,10 @@ public class StoreOrderController {
 	UserCardService userCardService;
 	@Autowired
 	ServiceService serviceService;
+	@Autowired
+	WechatUserService wechatUserService;
+	@Autowired
+	CustomerOrderService customerOrderService;
 
 	/**
 	 * 获取用户可用的折扣卡，次卡
@@ -47,8 +52,11 @@ public class StoreOrderController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public RestResult<CustomerOrder> create(@RequestBody ProductOrder productOrder, HttpServletRequest request) {
+	public RestResult<CustomerOrder> create(@RequestBody CustomerOrder customerOrder, HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		return new RestResult<CustomerOrder>();
+		user = wechatUserService.findById(user.getId());
+		customerOrder.setStore(user.getStore());
+		customerOrderService.create(customerOrder);
+		return new RestResult<CustomerOrder>(customerOrder);
 	}
 }

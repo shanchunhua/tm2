@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class CustomerOrder extends BaseEntity {
 
-	private String orderNo;
+	private String orderNo = System.nanoTime() + "";
 
 	private String productName;
 	// 服务员工
@@ -30,12 +30,17 @@ public class CustomerOrder extends BaseEntity {
 	@JoinColumn(name = "customer_id")
 	private WechatUser customer;
 	@ManyToOne
-	@JoinColumn(name = "discount_card_id")
-	private UserDiscountCard discountCard;
+	@JoinColumn(name = "user_discount_card_id")
+	private UserDiscountCard userDiscountCard;
+	@ManyToOne
+	@JoinColumn(name = "user_times_card_id")
+	private UserTimesCard userTimesCard;
 	@ManyToOne
 	@JoinColumn(name = "times_card_id")
-	private UserTimesCard timesCard;
-
+	private TimesCard timesCard;
+	@ManyToOne
+	@JoinColumn(name = "discount_card_id")
+	private CatalogDiscountCard discountCard;
 	private BigDecimal price;
 	private Integer quantity;
 	private BigDecimal total;
@@ -43,7 +48,8 @@ public class CustomerOrder extends BaseEntity {
 	private BigDecimal experienceMoney;
 
 	private BigDecimal actualPay;
-
+	@ManyToOne
+	@JoinColumn(name = "service_id")
 	private Service service;
 	@ManyToOne
 	@JoinColumn(name = "product_id")
@@ -103,20 +109,36 @@ public class CustomerOrder extends BaseEntity {
 		this.customer = customer;
 	}
 
-	public UserDiscountCard getDiscountCard() {
-		return discountCard;
+	public UserDiscountCard getUserDiscountCard() {
+		return userDiscountCard;
 	}
 
-	public void setDiscountCard(UserDiscountCard discountCard) {
-		this.discountCard = discountCard;
+	public void setUserDiscountCard(UserDiscountCard userDiscountCard) {
+		this.userDiscountCard = userDiscountCard;
 	}
 
-	public UserTimesCard getTimesCard() {
+	public UserTimesCard getUserTimesCard() {
+		return userTimesCard;
+	}
+
+	public void setUserTimesCard(UserTimesCard userTimesCard) {
+		this.userTimesCard = userTimesCard;
+	}
+
+	public TimesCard getTimesCard() {
 		return timesCard;
 	}
 
-	public void setTimesCard(UserTimesCard timesCard) {
+	public void setTimesCard(TimesCard timesCard) {
 		this.timesCard = timesCard;
+	}
+
+	public CatalogDiscountCard getDiscountCard() {
+		return discountCard;
+	}
+
+	public void setDiscountCard(CatalogDiscountCard discountCard) {
+		this.discountCard = discountCard;
 	}
 
 	public BigDecimal getPrice() {
