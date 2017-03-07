@@ -5,10 +5,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.CustomerOrder;
@@ -35,7 +39,7 @@ public class StoreOrderController {
 	CustomerOrderService customerOrderService;
 
 	/**
-	 * 获取用户可用的折扣卡，次卡
+	 * 获取用户可用的折扣卡
 	 * 
 	 * @param id:
 	 *            服务id
@@ -51,6 +55,14 @@ public class StoreOrderController {
 
 		return new RestResult<List<UserDiscountCard>>(userDiscountCards);
 	}
+
+	/**
+	 * 获取用户可用的次卡
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(path = "/timescard/{id}", method = RequestMethod.GET)
 	public RestResult<?> getUserTimesCards(@PathVariable Long id, HttpServletRequest request) {
 		Service service = serviceService.findById(id);
@@ -60,6 +72,14 @@ public class StoreOrderController {
 
 		return new RestResult<List<UserTimesCard>>(userTimesCards);
 	}
+
+	/**
+	 * 创建订单
+	 * 
+	 * @param customerOrder
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResult<CustomerOrder> create(@RequestBody CustomerOrder customerOrder, HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
@@ -68,5 +88,38 @@ public class StoreOrderController {
 		customerOrder.setCustomer(user);
 		customerOrderService.create(customerOrder);
 		return new RestResult<CustomerOrder>(customerOrder);
+	}
+
+	/**
+	 * 查寻当前用户的订单
+	 * 
+	 * @param customerOrder
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public RestResult<Page<CustomerOrder>> myOrders(HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "0") int page,
+			@RequestParam(required = false, defaultValue = "20") int size) {
+		Pageable pageable = new PageRequest(page, size);
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		user = wechatUserService.findById(user.getId());
+		return new RestResult<Page<CustomerOrder>>(customerOrderService.findByUser(user, pageable));
+	}
+	/**
+	 * 查寻当前员工服务的订单
+	 * 
+	 * @param customerOrder
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(path="/myserved",method = RequestMethod.GET)
+	public RestResult<Page<CustomerOrder>> myServedOrders(HttpServletRequest request,
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "20") int size) {
+		Pageable pageable = new PageRequest(page, size);
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		user = wechatUserService.findById(user.getId());
+		return new RestResult<Page<CustomerOrder>>(customerOrderService.findByStaff(user, pageable));
 	}
 }

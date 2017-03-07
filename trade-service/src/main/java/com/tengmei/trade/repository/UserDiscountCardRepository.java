@@ -14,4 +14,6 @@ public interface UserDiscountCardRepository extends JpaRepository<UserDiscountCa
 
 	List<UserDiscountCard> findByUserAndCardItems_catalog(WechatUser user, ServiceCatalog catalog);
 
+	List<UserDiscountCard> findByUser(WechatUser user);
+
 }

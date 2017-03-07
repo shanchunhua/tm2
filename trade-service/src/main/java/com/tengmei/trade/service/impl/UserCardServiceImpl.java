@@ -43,4 +43,14 @@ public class UserCardServiceImpl implements UserCardService {
 		return userTimesCardRepository.findByUserAndTimesCard_Service(user, service);
 	}
 
+	@Override
+	public List<UserTimesCard> findTimesCardByUser(WechatUser user) {
+		return userTimesCardRepository.findByUser(user);
+	}
+
+	@Override
+	public List<UserDiscountCard> findDiscountCardByUser(WechatUser user) {
+		return userDiscountCardRepository.findByUser(user);
+	}
+
 }

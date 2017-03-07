@@ -3,6 +3,8 @@ package com.tengmei.trade.service.impl;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import com.tengmei.trade.domain.TimesCard;
 import com.tengmei.trade.domain.UserDiscountCard;
 import com.tengmei.trade.domain.UserDiscountCardItem;
 import com.tengmei.trade.domain.UserTimesCard;
+import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.repository.CatalogDiscountCardRepository;
 import com.tengmei.trade.repository.CustomerOrderRepository;
 import com.tengmei.trade.repository.UserDiscountCardRepository;
@@ -92,6 +95,16 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 	@Override
 	public CustomerOrder findById(Long id) {
 		return customerOrderRepository.findOne(id);
+	}
+
+	@Override
+	public Page<CustomerOrder> findByUser(WechatUser user,Pageable pageable) {
+		return customerOrderRepository.findByCustomer(user,pageable);
+	}
+
+	@Override
+	public Page<CustomerOrder> findByStaff(WechatUser user, Pageable pageable) {
+		return customerOrderRepository.findByStaff(user,pageable);
 	}
 
 }

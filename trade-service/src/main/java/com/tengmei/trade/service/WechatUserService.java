@@ -1,5 +1,7 @@
 package com.tengmei.trade.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.tengmei.trade.domain.WechatUser;
@@ -15,4 +17,6 @@ public interface WechatUserService {
 	public WechatUser findByOpenid(String openid);
 
 	public WechatUser findById(Long id);
+
+	Page<WechatUser> findUserRelations(WechatUser user,Pageable pageable);
 }

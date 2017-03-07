@@ -3,6 +3,8 @@ package com.tengmei.trade.service.impl;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tengmei.trade.domain.WechatUser;
@@ -29,6 +31,11 @@ public class WechatUserServiceImpl implements WechatUserService {
 	@Override
 	public WechatUser findById(Long id) {
 		return wechatUserRepository.findOne(id);
+	}
+
+	@Override
+	public Page<WechatUser> findUserRelations(WechatUser user,Pageable pageable) {
+		return wechatUserRepository.findByParent(user,pageable);
 	}
 
 }

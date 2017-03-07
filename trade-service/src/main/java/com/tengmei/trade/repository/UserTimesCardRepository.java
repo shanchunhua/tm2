@@ -12,5 +12,6 @@ import com.tengmei.trade.domain.WechatUser;
 @Repository
 public interface UserTimesCardRepository extends JpaRepository<UserTimesCard, Long> {
 	List<UserTimesCard> findByUserAndTimesCard_Service(WechatUser user, Service service);
+	List<UserTimesCard> findByUser(WechatUser user);
 
 }
