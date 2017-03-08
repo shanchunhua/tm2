@@ -25,7 +25,7 @@ public class CustomerOrderServiceTest {
 	@Test
 	@Rollback(false)
 	public void testPay() {
-		customerOrderService.pay(customerOrderService.findById(5L));
+		customerOrderService.pay(customerOrderService.findById(4L));
 	}
 	@Test
 	public void testMyOrders(){

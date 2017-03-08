@@ -13,11 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
-import com.tengmei.trade.interceptor.WechatOAuth2Interceptor;
 import com.tengmei.trade.service.WechatUserService;
 import com.tengmei.wechat.service.BasicService;
 import com.tengmei.wechat.service.UserService;

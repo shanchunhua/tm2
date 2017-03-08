@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.tengmei.trade.domain.CatalogDiscountCard;
 import com.tengmei.trade.domain.Store;
-import com.tengmei.trade.domain.TimesCard;
 
 @Repository
 public interface CatalogDiscountCardRepository extends JpaRepository<CatalogDiscountCard, Long> {
