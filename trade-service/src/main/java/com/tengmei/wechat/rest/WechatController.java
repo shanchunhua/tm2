@@ -66,7 +66,7 @@ public class WechatController {
 		request.put("spbill_create_ip", "127.0.0.1");
 		request.put("notify_url", "https://www.tengmei360.com/wechat/payment/notify");
 		request.put("trade_type", "JSAPI");
-		request.put("openid", user.getUserInfo().getOpenid());
+		request.put("openid", user.getOpenid());
 
 		if (type == 1) {
 			ProductOrder order = productOrderService.findById(id);
@@ -147,7 +147,7 @@ public class WechatController {
 		request.put("spbill_create_ip", "127.0.0.1");
 		request.put("notify_url", "https://www.tengmei360.com/wechat/payment/notify");
 		request.put("trade_type", "JSAPI");
-		request.put("openid", user.getUserInfo().getOpenid());
+		request.put("openid", user.getOpenid());
 
 		// HttpTemplate httpTemplate = new HttpTemplate();
 		// String url = "https://api.mch.weixin.qq.com/pay/unifiedorder";

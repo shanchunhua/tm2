@@ -17,4 +17,6 @@ public interface WechatUserRepository extends JpaRepository<WechatUser, Long> {
 
 	Page<WechatUser> findByParent(WechatUser user, Pageable pageable);
 
+	Integer countByParent(WechatUser user);
+
 }

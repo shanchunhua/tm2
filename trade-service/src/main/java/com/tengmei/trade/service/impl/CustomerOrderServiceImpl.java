@@ -1,5 +1,6 @@
 package com.tengmei.trade.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,11 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 			UserDiscountCard userDiscountCard = order.getUserDiscountCard();
 			userDiscountCard.setLeftAmount(userDiscountCard.getLeftAmount().subtract(order.getFromDiscountCard()));
 			userDiscountCardRepository.save(userDiscountCard);
+		}
+		//如果用户支付涉及了现金部分
+		if(order.getActualPay().compareTo(new BigDecimal(0))>0){
+			WechatUser parent=order.getCustomer().getParent();
+			
 		}
 		order.setPaymentStatus(PaymentStatus.PAID);
 		customerOrderRepository.save(order);

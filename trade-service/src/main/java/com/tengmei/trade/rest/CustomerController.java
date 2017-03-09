@@ -14,6 +14,7 @@ import com.tengmei.trade.domain.CardType;
 import com.tengmei.trade.domain.CardUsageRecord;
 import com.tengmei.trade.domain.UserDiscountCard;
 import com.tengmei.trade.domain.UserTimesCard;
+import com.tengmei.trade.domain.UserWallet;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.UserCardService;
 
@@ -62,4 +63,5 @@ public class CustomerController {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		return new RestResult<List<CardUsageRecord>>(userCardService.findCardUsageRecord(id, type));
 	}
+
 }

@@ -22,18 +22,26 @@ public class StoreServiceImpl implements StoreService {
 	private StoreRepository storeRepository;
 	@Autowired
 	private WechatUserRepository wechatUserRepository;
+
 	@Override
 	public void create(Store store) {
 		store.getUser().setType(UserType.STORE_OWNER);
 		wechatUserRepository.save(store.getUser());
 		storeRepository.save(store);
 	}
+
 	@Override
-	public Store findStoreByOwner(WechatUser user){
+	public Store findStoreByOwner(WechatUser user) {
 		return storeRepository.findByUser(user);
 	}
+
 	@Override
 	public List<Store> findByChain(Chain chain) {
 		return storeRepository.findByChain(chain);
+	}
+
+	@Override
+	public Store findById(Long id) {
+		return storeRepository.findOne(id);
 	}
 }

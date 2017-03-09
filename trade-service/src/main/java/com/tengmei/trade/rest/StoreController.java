@@ -17,12 +17,12 @@ import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.rest.vo.StoreSummary;
+import com.tengmei.trade.service.HairStyleService;
 import com.tengmei.trade.service.ProductOrderService;
 import com.tengmei.trade.service.ProductService;
 import com.tengmei.trade.service.StaffService;
 import com.tengmei.trade.service.StoreService;
 import com.tengmei.trade.service.WechatUserService;
-import com.tengmei.wechat.service.HairStyleService;
 
 @RestController
 @RequestMapping("/rest/stores")
@@ -112,6 +112,7 @@ public class StoreController {
 			chainCount = storeService.findByChain(store.getChain()).size();
 		}
 		Map<String, Object> map = new HashMap<>();
+		map.put("store", store);
 		map.put("staffCount", staffCount);
 		map.put("globalHairStyleCount", globalHairStyleCount);
 		map.put("storeHairStyleCount", storeHairStyleCount);

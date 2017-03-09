@@ -1,4 +1,4 @@
-package com.tengmei.wechat.service;
+package com.tengmei.trade.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

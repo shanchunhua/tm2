@@ -37,7 +37,7 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 
 		// test only
 		//store owner
-		String openid = "oVxv2wFnV7u-PEHwOSHb7fJ_a00E";
+		String openid = "oVxv2wGJKgJuQ7XIsTGhPeMN1Cu0";
 		//supplier
 //		String openid="supplier";
 		WechatUser testUser = wechatUserService.findByOpenid(openid);

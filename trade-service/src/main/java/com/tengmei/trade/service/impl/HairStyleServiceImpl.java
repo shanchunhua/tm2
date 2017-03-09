@@ -1,4 +1,4 @@
-package com.tengmei.wechat.service.impl;
+package com.tengmei.trade.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tengmei.trade.domain.HairStyle;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.repository.HairStyleRepository;
-import com.tengmei.wechat.service.HairStyleService;
+import com.tengmei.trade.service.HairStyleService;
 
 @Service
 @Transactional

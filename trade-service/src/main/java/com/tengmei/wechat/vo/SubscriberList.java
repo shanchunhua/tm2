@@ -31,7 +31,7 @@ public class SubscriberList {
 		this.count = count;
 	}
 
-	public Object getData() {
+	public  Map<String, List<String>> getData() {
 		return data;
 	}
 

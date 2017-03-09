@@ -1,5 +1,8 @@
 package com.tengmei.wechat.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tengmei.trade.TradeServiceApplication;
+import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.repository.WechatUserRepository;
 import com.tengmei.wechat.service.UserService;
+import com.tengmei.wechat.vo.SubscriberList;
 import com.tengmei.wechat.vo.UserInfo;
 
 @RunWith(SpringRunner.class)
@@ -17,6 +23,8 @@ public class UserServiceTest {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	WechatUserRepository wechatUserRepository;
 	@Test
 	public void testGetUserInfo() {
 
@@ -28,6 +36,14 @@ public class UserServiceTest {
 	@Test
 	public void testGetSubscribers() {
 
-		userService.getSubscribers(null);
+		SubscriberList subscriberList=userService.getSubscribers(null);
+		Map<String, List<String>> data = subscriberList.getData();
+		for (String openid  : data.get("openid")) {
+			UserInfo userInfo = userService.getUserInfo(openid, null);
+			WechatUser user=new WechatUser();
+			user.setUserInfo(userInfo);
+			user.getWallet().setUser(user);
+			wechatUserRepository.save(user);
+		}
 	}
 }

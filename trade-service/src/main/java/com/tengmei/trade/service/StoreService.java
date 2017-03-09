@@ -14,4 +14,6 @@ public interface StoreService {
 	
 	List<Store> findByChain(Chain chain);
 
+	Store findById(Long id);
+
 }

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.HairStyle;
+import com.tengmei.trade.service.HairStyleService;
 import com.tengmei.trade.service.StoreService;
-import com.tengmei.wechat.service.HairStyleService;
 
 @RestController
 @RequestMapping("/rest/hairstyles")
