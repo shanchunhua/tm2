@@ -30,7 +30,6 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 	private WechatUserService wechatUserService;
 	@Autowired
 	private UserService userService;
-
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -44,6 +43,7 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 		UserInfo userInfo = userService.getUserInfo(openid, null);
 		testUser.setUserInfo(userInfo);
 		request.getSession().setAttribute("user", testUser);
+		request.getSession().setAttribute("store", testUser.getStore());
 		//test end
 		if (handler instanceof ResourceHttpRequestHandler) {
 			logger.debug(request.getRequestURL().toString());

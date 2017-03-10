@@ -47,9 +47,75 @@ public class StoreWallet extends CommonEntity {
 
 	@Column(precision = 10, scale = 2)
 	private BigDecimal withdrawedExperienceMoney = new BigDecimal(0);
+
+	// 会员部分
+	// 数量
+	private Integer memberCount = 0;
+	// 会员充值总金额
+	private BigDecimal memberCardTotal = new BigDecimal(0);
+	// 会员卡剩余金额
+	private BigDecimal memberCardLeft = new BigDecimal(0);
+
+	public BigDecimal getLeftExperienceMoney() {
+		return leftExperienceMoney;
+	}
+
+	public void setLeftExperienceMoney(BigDecimal leftExperienceMoney) {
+		this.leftExperienceMoney = leftExperienceMoney;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public BigDecimal getTotalExperienceMoney() {
+		return totalExperienceMoney;
+	}
+
+	public void setTotalExperienceMoney(BigDecimal totalExperienceMoney) {
+		this.totalExperienceMoney = totalExperienceMoney;
+	}
+
+	public BigDecimal getWithdrawedExperienceMoney() {
+		return withdrawedExperienceMoney;
+	}
+
+	public void setWithdrawedExperienceMoney(BigDecimal withdrawedExperienceMoney) {
+		this.withdrawedExperienceMoney = withdrawedExperienceMoney;
+	}
+
+	public Integer getMemberCount() {
+		return memberCount;
+	}
+
+	public void setMemberCount(Integer memberCount) {
+		this.memberCount = memberCount;
+	}
+
+	public BigDecimal getMemberCardTotal() {
+		return memberCardTotal;
+	}
+
+	public void setMemberCardTotal(BigDecimal memberCardTotal) {
+		this.memberCardTotal = memberCardTotal;
+	}
+
+	public BigDecimal getMemberCardLeft() {
+		return memberCardLeft;
+	}
+
+	public void setMemberCardLeft(BigDecimal memberCardLeft) {
+		this.memberCardLeft = memberCardLeft;
+	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public BigDecimal getLeft() {
 		return left;
 	}

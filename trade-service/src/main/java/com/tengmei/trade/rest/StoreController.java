@@ -8,11 +8,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.domain.CustomerLevel;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.WechatUser;
@@ -129,5 +135,15 @@ public class StoreController {
 			List<Store> stores = storeService.findByChain(store.getChain());
 		}
 		return null;
+	}
+
+	@RequestMapping("/users/{customerLevel}")
+	public RestResult<Page<WechatUser>> findSubscriber(HttpServletRequest request,
+			@PathVariable CustomerLevel customerLevel, @RequestParam(required = false, defaultValue = "0") int page,
+			@RequestParam(required = false, defaultValue = "20") int size) {
+		Pageable pageable = new PageRequest(page, size);
+		Store store = (Store) request.getSession().getAttribute("store");
+		Page<WechatUser> users = storeService.findUserByStoreCustomerLevel(store,customerLevel, pageable);
+		return new RestResult<Page<WechatUser>>(users);
 	}
 }

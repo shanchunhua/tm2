@@ -5,9 +5,13 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tengmei.trade.domain.Chain;
+import com.tengmei.trade.domain.CustomerLevel;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
@@ -43,5 +47,11 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public Store findById(Long id) {
 		return storeRepository.findOne(id);
+	}
+
+
+	@Override
+	public Page<WechatUser> findUserByStoreCustomerLevel(Store store, CustomerLevel customerLevel, Pageable pageable) {
+		return wechatUserRepository.findByStoreAndCustomerLevel(store, customerLevel, pageable);
 	}
 }

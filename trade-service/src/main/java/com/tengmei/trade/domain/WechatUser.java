@@ -38,6 +38,8 @@ public class WechatUser extends BaseEntity implements Serializable {
 	private String unionid;
 	private String remark;
 	private Integer groupid;
+	
+	private CustomerLevel customerLevel;
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
