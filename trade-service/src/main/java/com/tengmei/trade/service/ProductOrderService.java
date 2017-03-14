@@ -53,7 +53,7 @@ public interface ProductOrderService {
 
 	BigDecimal getTotalOrderAmountBySupplier(Supplier supplier);
 
-	public List<OrderSummaryByStore> getOrderSummaryByStores(Set<Store> stores);
+	public List<OrderSummaryByStore> getOrderSummaryByStores(List<Store> stores);
 
 	public ProductOrder findById(Long id);
 }

@@ -16,6 +16,7 @@ import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.ProductService;
 import com.tengmei.trade.service.StoreService;
+import com.tengmei.trade.service.SupplierStoreService;
 
 @RestController
 @RequestMapping("/rest/products")
@@ -24,32 +25,28 @@ public class ProductController {
 	private ProductService productService;
 	@Autowired
 	private StoreService storeService;
+	@Autowired
+	private SupplierStoreService supplierStoreService;
+
 	@RequestMapping(method = RequestMethod.GET)
 	public RestResult<List<Product>> getProducts(HttpServletRequest request) {
-		
+
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		Store store=storeService.findStoreByOwner(user);
-		List<Product> products=productService.findBySuppliers(store.getSuppliers());
-		
-		// TODO test only
+		Store store = storeService.findStoreByOwner(user);
+		List<Product> products = productService.findBySuppliers(supplierStoreService.findSuppliersByStore(store));
+
 		RestResult<List<Product>> result = new RestResult<>();
-//		List<Product> products = new ArrayList<>();
-//		for (int i = 0; i < 15; i++) {
-//			Product product = new Product();
-//			product.setId(Long.valueOf(i+1));
-//			product.setName("Test" + System.currentTimeMillis());
-//			products.add(product);
-//		}
+
 		result.setData(products);
 		return result;
 	}
-	@RequestMapping(value="/{id}",method = RequestMethod.GET)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public RestResult<Product> getProductById(@PathVariable Long id) {
-		
-		
+
 		// TODO test only
 		RestResult<Product> result = new RestResult<>();
-		Product product=productService.findById(id);
+		Product product = productService.findById(id);
 		result.setData(product);
 		return result;
 	}

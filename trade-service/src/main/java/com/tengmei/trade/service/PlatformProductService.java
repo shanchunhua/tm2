@@ -7,4 +7,6 @@ import com.tengmei.trade.domain.PlatformProduct;
 
 public interface PlatformProductService {
 	Page<PlatformProduct> getAll(Pageable pageable);
+
+	PlatformProduct find(Long id);
 }

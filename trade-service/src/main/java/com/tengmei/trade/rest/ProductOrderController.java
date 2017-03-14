@@ -21,6 +21,7 @@ import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.ProductOrderService;
 import com.tengmei.trade.service.StoreService;
 import com.tengmei.trade.service.SupplierService;
+import com.tengmei.trade.service.SupplierStoreService;
 
 @RestController
 @RequestMapping("/rest/orders")
@@ -32,6 +33,8 @@ public class ProductOrderController {
 	private StoreService storeService;
 	@Autowired
 	private SupplierService supplierService;
+	@Autowired
+	private SupplierStoreService supplierStoreService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResult<ProductOrder> create(@RequestBody ProductOrder productOrder, HttpServletRequest request) {
@@ -57,7 +60,7 @@ public class ProductOrderController {
 
 	@RequestMapping("/{id}/fulfill")
 	public RestResult<Void> getOrderSummaryBySupplier(@PathVariable Long id, HttpServletRequest request) {
-		RestResult<Void> result = new RestResult<Void>();	
+		RestResult<Void> result = new RestResult<Void>();
 		ProductOrder order = new ProductOrder();
 		order.setId(id);
 		productOrderService.fulfillOrder(order);
@@ -69,17 +72,18 @@ public class ProductOrderController {
 	public RestResult<List<OrderSummaryBySupplier>> getOrderSummaryBySupplier(HttpServletRequest request) {
 		RestResult<List<OrderSummaryBySupplier>> result = new RestResult<List<OrderSummaryBySupplier>>();
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		List<OrderSummaryBySupplier> summaries = productOrderService
-				.getOrderSummaryBySuppliers(storeService.findStoreByOwner(user).getSuppliers());
+		List<OrderSummaryBySupplier> summaries = productOrderService.getOrderSummaryBySuppliers(
+				supplierStoreService.findSuppliersByStore(storeService.findStoreByOwner(user)));
 		result.setData(summaries);
 		return result;
 	}
+
 	@RequestMapping("/sumbystore")
 	public RestResult<List<OrderSummaryByStore>> getOrderSummaryByStore(HttpServletRequest request) {
 		RestResult<List<OrderSummaryByStore>> result = new RestResult<List<OrderSummaryByStore>>();
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		List<OrderSummaryByStore> summaries = productOrderService
-				.getOrderSummaryByStores(supplierService.findSupplier(user).getStores());
+				.getOrderSummaryByStores(supplierStoreService.findStoresBySupplier(supplierService.findSupplier(user)));
 		result.setData(summaries);
 		return result;
 	}

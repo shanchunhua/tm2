@@ -143,7 +143,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	}
 
 	@Override
-	public List<OrderSummaryByStore> getOrderSummaryByStores(Set<Store> stores) {
+	public List<OrderSummaryByStore> getOrderSummaryByStores(List<Store> stores) {
 		List<OrderSummaryByStore> summaries = new ArrayList<>();
 		for (Store store : stores) {
 			OrderSummaryByStore summary = new OrderSummaryByStore();

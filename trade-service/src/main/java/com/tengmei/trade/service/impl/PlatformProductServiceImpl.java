@@ -21,4 +21,9 @@ public class PlatformProductServiceImpl implements PlatformProductService {
 		return platformProductRepository.findAll(pageable);
 	}
 
+	@Override
+	public PlatformProduct find(Long id) {
+		return platformProductRepository.findOne(id);
+	}
+
 }
