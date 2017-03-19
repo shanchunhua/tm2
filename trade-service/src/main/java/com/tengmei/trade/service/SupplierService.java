@@ -1,5 +1,7 @@
 package com.tengmei.trade.service;
 
+import java.util.List;
+
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.WechatUser;
 
@@ -23,4 +25,6 @@ public interface SupplierService {
 	 * @return
 	 */
 	public Supplier findSupplier(WechatUser user);
+
+	public List<Supplier> findAll();
 }

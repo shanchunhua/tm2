@@ -1,5 +1,7 @@
 package com.tengmei.trade.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,11 @@ public class SupplierServiceImpl implements SupplierService {
 	public Supplier findSupplier(WechatUser user) {
 
 		return supplierRepository.findByUser(user);
+	}
+
+	@Override
+	public List<Supplier> findAll() {
+		return supplierRepository.findAll();
 	}
 
 }
