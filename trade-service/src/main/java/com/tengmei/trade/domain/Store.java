@@ -91,10 +91,6 @@ public class Store extends BaseEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private WechatUser user;
-	@ManyToMany(targetEntity = Supplier.class)
-	@JoinTable(name = "store_supplier", joinColumns = { @JoinColumn(name = "store_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "supplier_id") })
-	private Set<Supplier> suppliers = new HashSet<Supplier>();
 
 	public WechatUser getUser() {
 		return user;
@@ -106,14 +102,6 @@ public class Store extends BaseEntity implements Serializable {
 
 	public String getName() {
 		return name;
-	}
-
-	public Set<Supplier> getSuppliers() {
-		return suppliers;
-	}
-
-	public void setSuppliers(Set<Supplier> suppliers) {
-		this.suppliers = suppliers;
 	}
 
 	public void setName(String name) {

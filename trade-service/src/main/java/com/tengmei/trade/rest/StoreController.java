@@ -28,6 +28,7 @@ import com.tengmei.trade.service.ProductOrderService;
 import com.tengmei.trade.service.ProductService;
 import com.tengmei.trade.service.StaffService;
 import com.tengmei.trade.service.StoreService;
+import com.tengmei.trade.service.SupplierStoreService;
 import com.tengmei.trade.service.WechatUserService;
 
 @RestController
@@ -45,6 +46,8 @@ public class StoreController {
 	private WechatUserService wechatUserService;
 	@Autowired
 	private HairStyleService hairStyleService;
+	@Autowired
+	SupplierStoreService supplierStoreService;
 
 	/**
 	 * 创建店铺申请
@@ -79,7 +82,7 @@ public class StoreController {
 		Store store = storeService.findStoreByOwner(user);
 		StoreSummary storeSummary = new StoreSummary();
 		storeSummary.setStore(store);
-		storeSummary.setSupplierCount(store.getSuppliers().size());
+		storeSummary.setSupplierCount(supplierStoreService.countByStore(store));
 		storeSummary.setTotalAmount(productOrderService.getTotalOrderAmountByStore(store));
 		storeSummary.setOrderCount(productOrderService.getTotalOrderCountByStore(store));
 		return new RestResult<StoreSummary>(storeSummary);
@@ -89,10 +92,11 @@ public class StoreController {
 	public RestResult<Collection<Supplier>> getStoreSuppliers(HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		Store store = storeService.findStoreByOwner(user);
-		for (Supplier supplier : store.getSuppliers()) {
+		List<Supplier> suppliers=supplierStoreService.findSuppliersByStore(store);
+		for (Supplier supplier : suppliers) {
 			supplier.setProductCount(productService.countBySupplier(supplier));
 		}
-		return new RestResult<Collection<Supplier>>(store.getSuppliers());
+		return new RestResult<Collection<Supplier>>(suppliers);
 	}
 
 	/**

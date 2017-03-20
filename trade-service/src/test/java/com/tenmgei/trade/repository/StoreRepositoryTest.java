@@ -43,28 +43,28 @@ public class StoreRepositoryTest {
 		storeRepository.save(entity);
 	}
 
-	@Test
-	public void testFindById() {
-		Store entity = storeRepository.findOne(1L);
-		Set<Supplier> suppliers=entity.getSuppliers();
-		for (Supplier supplier : suppliers) {
-			System.out.println(supplier.getName());
-		}
-	}
+//	@Test
+//	public void testFindById() {
+//		Store entity = storeRepository.findOne(1L);
+//		Set<Supplier> suppliers=entity.getSuppliers();
+//		for (Supplier supplier : suppliers) {
+//			System.out.println(supplier.getName());
+//		}
+//	}
+//
+//	@Test
+//	@Rollback(false)
+//	public void testAddSuppliers() {
+//		Store entity = storeRepository.findOne(1L);
+//		entity.getSuppliers().add(supplierRepository.findOne(2L));
+//		storeRepository.save(entity);
+//	}
 
-	@Test
-	@Rollback(false)
-	public void testAddSuppliers() {
-		Store entity = storeRepository.findOne(1L);
-		entity.getSuppliers().add(supplierRepository.findOne(2L));
-		storeRepository.save(entity);
-	}
-
-	@Test
-	@Rollback(false)
-	public void testDeleteSuppliers() {
-		Store entity = storeRepository.findOne(1L);
-		entity.getSuppliers().remove(supplierRepository.findOne(1L));
-		storeRepository.save(entity);
-	}
+//	@Test
+//	@Rollback(false)
+//	public void testDeleteSuppliers() {
+//		Store entity = storeRepository.findOne(1L);
+//		entity.getSuppliers().remove(supplierRepository.findOne(1L));
+//		storeRepository.save(entity);
+//	}
 }

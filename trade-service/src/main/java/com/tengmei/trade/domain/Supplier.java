@@ -74,10 +74,6 @@ public class Supplier extends BaseEntity implements Serializable {
 		this.wallet = wallet;
 	}
 
-	public Set<Store> getStores() {
-		return stores;
-	}
-
 	public String getBanner1() {
 		return banner1;
 	}
@@ -102,17 +98,10 @@ public class Supplier extends BaseEntity implements Serializable {
 		this.banner3 = banner3;
 	}
 
-	public void setStores(Set<Store> stores) {
-		this.stores = stores;
-	}
-
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private WechatUser user;
-	@ManyToMany(mappedBy = "suppliers")
-	@JsonIgnore
-	private Set<Store> stores = new HashSet<Store>();
 
 	public WechatUser getUser() {
 		return user;
