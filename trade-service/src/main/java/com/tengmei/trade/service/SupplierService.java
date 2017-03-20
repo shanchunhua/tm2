@@ -27,4 +27,6 @@ public interface SupplierService {
 	public Supplier findSupplier(WechatUser user);
 
 	public List<Supplier> findAll();
+
+	public Supplier findById(Long id);
 }

@@ -48,4 +48,9 @@ public class SupplierServiceImpl implements SupplierService {
 		return supplierRepository.findAll();
 	}
 
+	@Override
+	public Supplier findById(Long id) {
+		return supplierRepository.findOne(id);
+	}
+
 }
