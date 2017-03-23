@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.tengmei.trade.domain.Product;
 import com.tengmei.trade.domain.ProductCatalog;
 import com.tengmei.trade.domain.Supplier;
+import com.tengmei.trade.repository.ProductCatalogRepository;
 import com.tengmei.trade.repository.ProductRepository;
 import com.tengmei.trade.service.ProductService;
 
@@ -20,6 +21,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private ProductCatalogRepository productCatalogRepository;
 
 	@Override
 	public List<Product> findBySupplier(Supplier supplier) {
@@ -51,5 +54,11 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.countBySupplier(supplier);
 	}
 
+	@Override
+	public void save(Product product) {
+		product.setCatalog(productCatalogRepository.findOne(product.getCatalog().getId()));
+		productRepository.save(product);
+
+	}
 
 }
