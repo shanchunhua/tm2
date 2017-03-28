@@ -20,6 +20,7 @@ public class WechatUserServiceImpl implements WechatUserService {
 
 	@Override
 	public void create(WechatUser entity) {
+		entity.getWallet().setUser(entity);
 		wechatUserRepository.save(entity);
 	}
 

@@ -42,7 +42,7 @@ public class TradeServiceApplication {
 			public void addInterceptors(InterceptorRegistry registry) {
 				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/productindex")
 						.addPathPatterns("/main").addPathPatterns("/rest/**")
-						.excludePathPatterns("/wechat/oauth2", "/static/**");
+						.excludePathPatterns("/wechat/**", "/static/**");
 				super.addInterceptors(registry);
 			}
 

@@ -23,8 +23,8 @@ import com.tengmei.wechat.vo.UserInfo;
 
 @Controller
 @RequestMapping("/")
-public class EntryController {
-	private static final Logger logger = LoggerFactory.getLogger(EntryController.class);
+public class FpsEntryController {
+	private static final Logger logger = LoggerFactory.getLogger(FpsEntryController.class);
 	@Value("${wechat.appID}")
 	String appID;
 
@@ -34,6 +34,9 @@ public class EntryController {
 	private UserService userService;
 	@Autowired
 	private WechatUserService wechatUserService;
+
+	@Value("${fps.url}")
+	private String fpsUrl;
 
 	@RequestMapping("/wechat/oauth2")
 	public String oauth2(@RequestParam String code, @RequestParam String state, HttpServletResponse response,
@@ -49,15 +52,16 @@ public class EntryController {
 		if (user == null) {
 			user = new WechatUser();
 			user.setOpenid(openid);
+			user.setUserInfo(userInfo);
 			wechatUserService.create(user);
 			user.setUserInfo(userInfo);
 			request.getSession().setAttribute("user", user);
-			return "redirect:http://www.tengmei360.com/index.html#!/choosetype";
+			return "redirect:" + fpsUrl + "index.html#!/choosetype";
 		} else {
 			user.setUserInfo(userInfo);
 			request.getSession().setAttribute("user", user);
 			if (user.getType() == null) {
-				return "redirect:http://www.tengmei360.com/index.html#!/choosetype";
+				return "redirect:" + fpsUrl + "index.html#!/choosetype";
 			} else {
 				return "redirect:" + path;
 			}
@@ -67,16 +71,16 @@ public class EntryController {
 
 	@RequestMapping("/productindex")
 	public String productIndex(HttpServletResponse response) throws IOException {
-		return "redirect:http://www.tengmei360.com/index.html#!productindex";
+		return "redirect:" + fpsUrl + "index.html#!productindex";
 	}
 
 	@RequestMapping("/main")
 	public String main(HttpServletRequest request) throws IOException {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		if (user.getType().equals(UserType.SUPPLIER)) {
-			return "redirect:http://www.tengmei360.com/index.html#!supplierindex";
+			return "redirect:" + fpsUrl + "index.html#!supplierindex";
 		} else {
-			return "redirect:http://www.tengmei360.com/index.html#!storeindex";
+			return "redirect:" + fpsUrl + "index.html#!storeindex";
 		}
 	}
 

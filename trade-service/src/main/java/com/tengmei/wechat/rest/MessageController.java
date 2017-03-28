@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/message")
+@RequestMapping("/wechat/message")
 public class MessageController {
 	@Value("${wechat.fps.token}")
 	private String token;

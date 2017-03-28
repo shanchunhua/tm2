@@ -23,33 +23,33 @@ import com.tengmei.wechat.vo.UserInfo;
 public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(WechatOAuth2Interceptor.class);
 
-	@Value("${wechat.appID}")
+	@Value("${wechat.fps.appID}")
 	private String appID;
-
+	@Value("${fps.url}")
+	private String fpsUrl;
 	@Autowired
 	private WechatUserService wechatUserService;
 	@Autowired
 	private UserService userService;
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
-		// test only
-		//store owner
-		String openid = "oVxv2wGJKgJuQ7XIsTGhPeMN1Cu0";
-		//supplier
-//		String openid="supplier";
-		WechatUser testUser = wechatUserService.findByOpenid(openid);
-		UserInfo userInfo = userService.getUserInfo(openid, null);
-		testUser.setUserInfo(userInfo);
-		request.getSession().setAttribute("user", testUser);
-		request.getSession().setAttribute("store", testUser.getStore());
-		//test end
-		if (handler instanceof ResourceHttpRequestHandler) {
-			logger.debug(request.getRequestURL().toString());
-		}
-		Object user = request.getSession().getAttribute("user");
-
+		/*
+		 * 
+		 * // test only // store owner String openid =
+		 * "oVxv2wGJKgJuQ7XIsTGhPeMN1Cu0"; // supplier // String
+		 * openid="supplier"; WechatUser testUser =
+		 * wechatUserService.findByOpenid(openid); UserInfo userInfo =
+		 * userService.getUserInfo(openid, null);
+		 * testUser.setUserInfo(userInfo);
+		 * request.getSession().setAttribute("user", testUser);
+		 * request.getSession().setAttribute("store", testUser.getStore()); //
+		 * test end if (handler instanceof ResourceHttpRequestHandler) {
+		 * logger.debug(request.getRequestURL().toString()); } Object user =
+		 * request.getSession().getAttribute("user");
+		 */
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		if (user == null) {
 			String path = request.getRequestURI();
 			// 记录当前路径，以确保登录后返回到正确的地址
@@ -58,7 +58,7 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 			}
 
 			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appID + "&redirect_uri="
-					+ "http://www.tengmei360.com/wechat/oauth2&response_type=code&scope=snsapi_base&state=" + "STATE"
+					+ fpsUrl + "wechat/oauth2&response_type=code&scope=snsapi_base&state=" + "STATE"
 					+ "#wechat_redirect";
 
 			response.sendRedirect(url);
