@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.Product;
+import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Store;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.ProductService;
@@ -38,6 +40,14 @@ public class ProductController {
 		RestResult<List<Product>> result = new RestResult<>();
 
 		result.setData(products);
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public RestResult<Product> save(@RequestBody Product product) {
+		RestResult<Product> result = new RestResult<>();
+		productService.save(product);
+		result.setData(product);
 		return result;
 	}
 

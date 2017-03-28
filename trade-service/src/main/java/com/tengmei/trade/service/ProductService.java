@@ -20,4 +20,6 @@ public interface ProductService {
 	
 	public Integer countBySupplier(Supplier supplier);
 
+	public void save(Product product);
+
 }
