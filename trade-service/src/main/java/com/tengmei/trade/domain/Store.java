@@ -40,6 +40,26 @@ public class Store extends BaseEntity implements Serializable {
 	private String banner1;
 	private String banner2;
 	private String banner3;
+
+	private String appid;
+
+	private String accessToken;
+	public String getAppid() {
+		return appid;
+	}
+
+	public void setAppid(String appid) {
+		this.appid = appid;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
 	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "store")
 	// @Transient
 	private StoreWallet wallet = new StoreWallet();
