@@ -150,4 +150,13 @@ public class StoreController {
 		Page<WechatUser> users = storeService.findUserByStoreCustomerLevel(store,customerLevel, pageable);
 		return new RestResult<Page<WechatUser>>(users);
 	}
+	
+	@RequestMapping(path="/expMoneyRateSetting",method = RequestMethod.POST)
+	public RestResult<Store> updateExperienceMoneyRateSetting(@RequestBody Store store, HttpServletRequest request) {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		store.setUser(user);
+		storeService.create(store);
+		return new RestResult<Store>();
+	}
+
 }
