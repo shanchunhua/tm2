@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * 店铺产品类别体验金比例设置
@@ -38,8 +40,12 @@ public class StoreCatalogExperienceMoneyRateSetting extends BaseEntity {
 		this.experienceMoneyRate = experienceMoneyRate;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "store_id")
 	private Store store;
 
+	@ManyToOne
+	@JoinColumn(name = "catalog_id")
 	private ServiceCatalog serviceCatalog;
 
 	@Column(precision = 5, scale = 2)

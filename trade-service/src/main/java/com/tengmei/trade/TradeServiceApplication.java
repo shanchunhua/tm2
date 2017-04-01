@@ -38,13 +38,13 @@ public class TradeServiceApplication {
 				registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE");
 			}
 
-			@Override
-			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/productindex")
-						.addPathPatterns("/main").addPathPatterns("/rest/**")
-						.excludePathPatterns("/wechat/**", "/static/**");
-				super.addInterceptors(registry);
-			}
+//			@Override
+//			public void addInterceptors(InterceptorRegistry registry) {
+//				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/productindex")
+//						.addPathPatterns("/main").addPathPatterns("/rest/**")
+//						.excludePathPatterns("/wechat/**", "/static/**");
+//				super.addInterceptors(registry);
+//			}
 
 			@Override
 			public void configurePathMatch(PathMatchConfigurer configurer) {

@@ -29,7 +29,7 @@ public class PlatformController {
 	PlatformService platformService;
 	@Autowired
 	StoreService storeService;
-	@Value("${platform.appid}")
+	@Value("${platform.appID}")
 	private String platformAppid;
 
 	/**

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.tengmei.trade.domain.Platform;
@@ -18,9 +19,9 @@ import com.tengmei.wechat.util.HttpTemplate;
 import com.tengmei.wechat.util.StringObjectConverter;
 import com.tengmei.wechat.vo.AccessTokenReteriver;
 import com.tengmei.wechat.vo.CachedObject;
-
+@Service
 public class PlatformServiceImpl implements PlatformService {
-	@Value("${platform.appid}")
+	@Value("${platform.appID}")
 	private String componentAppid;
 	@Autowired
 	private PlatformRepository platformRepository;
@@ -32,7 +33,7 @@ public class PlatformServiceImpl implements PlatformService {
 	private String componentSecret;
 
 	private String componentVerifyTicket;
-	@Value("${platform.certLocation}")
+	@Value("${wechat.payment.certLocation}")
 	private String certLocation;
 
 	public void setComponentVerifyTicket(String componentVerifyTicket) {

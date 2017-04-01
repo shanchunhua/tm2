@@ -54,4 +54,9 @@ public class StoreServiceImpl implements StoreService {
 	public Page<WechatUser> findUserByStoreCustomerLevel(Store store, CustomerLevel customerLevel, Pageable pageable) {
 		return wechatUserRepository.findByStoreAndCustomerLevel(store, customerLevel, pageable);
 	}
+
+	@Override
+	public List<Store> findAll() {
+		return storeRepository.findAll();
+	}
 }

@@ -63,6 +63,12 @@ public class StoreController {
 		return new RestResult<Store>();
 	}
 
+	@RequestMapping(method = RequestMethod.GET)
+	public RestResult<List<Store>> findAll() {
+		List<Store> stores = storeService.findAll();
+		return new RestResult<List<Store>>(stores);
+	}
+
 	/**
 	 * 当前登录用户店铺信息
 	 * 
@@ -92,7 +98,7 @@ public class StoreController {
 	public RestResult<Collection<Supplier>> getStoreSuppliers(HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		Store store = storeService.findStoreByOwner(user);
-		List<Supplier> suppliers=supplierStoreService.findSuppliersByStore(store);
+		List<Supplier> suppliers = supplierStoreService.findSuppliersByStore(store);
 		for (Supplier supplier : suppliers) {
 			supplier.setProductCount(productService.countBySupplier(supplier));
 		}
@@ -147,11 +153,11 @@ public class StoreController {
 			@RequestParam(required = false, defaultValue = "20") int size) {
 		Pageable pageable = new PageRequest(page, size);
 		Store store = (Store) request.getSession().getAttribute("store");
-		Page<WechatUser> users = storeService.findUserByStoreCustomerLevel(store,customerLevel, pageable);
+		Page<WechatUser> users = storeService.findUserByStoreCustomerLevel(store, customerLevel, pageable);
 		return new RestResult<Page<WechatUser>>(users);
 	}
-	
-	@RequestMapping(path="/expMoneyRateSetting",method = RequestMethod.POST)
+
+	@RequestMapping(path = "/expMoneyRateSetting", method = RequestMethod.POST)
 	public RestResult<Store> updateExperienceMoneyRateSetting(@RequestBody Store store, HttpServletRequest request) {
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
 		store.setUser(user);

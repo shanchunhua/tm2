@@ -22,4 +22,6 @@ public interface StoreService {
 
 	Page<WechatUser> findUserByStoreCustomerLevel(Store store, CustomerLevel customerLevel, Pageable pageable);
 
+	List<Store> findAll();
+
 }
