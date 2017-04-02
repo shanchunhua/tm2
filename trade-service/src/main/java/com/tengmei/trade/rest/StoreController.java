@@ -63,6 +63,12 @@ public class StoreController {
 		return new RestResult<Store>();
 	}
 
+	@RequestMapping(method = RequestMethod.PUT)
+	public RestResult<Store> update(@RequestBody Store store) {
+		storeService.update(store);
+		return new RestResult<Store>();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public RestResult<List<Store>> findAll() {
 		List<Store> stores = storeService.findAll();

@@ -59,4 +59,9 @@ public class StoreServiceImpl implements StoreService {
 	public List<Store> findAll() {
 		return storeRepository.findAll();
 	}
+
+	@Override
+	public void update(Store store) {
+		storeRepository.save(store);
+	}
 }

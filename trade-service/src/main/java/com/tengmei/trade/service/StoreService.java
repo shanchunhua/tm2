@@ -24,4 +24,6 @@ public interface StoreService {
 
 	List<Store> findAll();
 
+	void update(Store store);
+
 }
