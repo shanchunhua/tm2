@@ -26,10 +26,7 @@ public class StoreCatalogExperienceMoneyRateSettingServiceImpl
 	@Autowired
 	private ServiceCatalogRepository serviceCatalogRepository;
 
-	@Override
-	public void save(StoreCatalogExperienceMoneyRateSetting setting) {
-		storeCatalogExperienceMoneyRateSettingRepository.save(setting);
-	}
+
 
 	@Override
 	public List<StoreCatalogExperienceMoneyRateSetting> findByStore(Long storeID) {
@@ -41,13 +38,19 @@ public class StoreCatalogExperienceMoneyRateSettingServiceImpl
 			if (setting == null) {
 				setting = new StoreCatalogExperienceMoneyRateSetting();
 				setting.setStore(store);
-				setting.setServiceCatalog(serviceCatalog);
+				setting.setCatalog(serviceCatalog);
 				setting.setExperienceMoneyRate(new BigDecimal(0));
 				storeCatalogExperienceMoneyRateSettingRepository.save(setting);
 			}
 		}
 
 		return storeCatalogExperienceMoneyRateSettingRepository.findByStore(store);
+	}
+
+	@Override
+	public void save(List<StoreCatalogExperienceMoneyRateSetting> settings) {
+		storeCatalogExperienceMoneyRateSettingRepository.save(settings);
+		
 	}
 
 }

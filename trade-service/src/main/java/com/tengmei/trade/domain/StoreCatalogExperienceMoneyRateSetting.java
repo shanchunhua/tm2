@@ -24,12 +24,13 @@ public class StoreCatalogExperienceMoneyRateSetting extends BaseEntity {
 		this.store = store;
 	}
 
-	public ServiceCatalog getServiceCatalog() {
-		return serviceCatalog;
+
+	public ServiceCatalog getCatalog() {
+		return catalog;
 	}
 
-	public void setServiceCatalog(ServiceCatalog serviceCatalog) {
-		this.serviceCatalog = serviceCatalog;
+	public void setCatalog(ServiceCatalog catalog) {
+		this.catalog = catalog;
 	}
 
 	public BigDecimal getExperienceMoneyRate() {
@@ -46,7 +47,7 @@ public class StoreCatalogExperienceMoneyRateSetting extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "catalog_id")
-	private ServiceCatalog serviceCatalog;
+	private ServiceCatalog catalog;
 
 	@Column(precision = 5, scale = 2)
 	private BigDecimal experienceMoneyRate;

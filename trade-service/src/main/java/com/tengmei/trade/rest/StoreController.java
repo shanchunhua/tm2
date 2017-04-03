@@ -166,15 +166,22 @@ public class StoreController {
 		Page<WechatUser> users = storeService.findUserByStoreCustomerLevel(store, customerLevel, pageable);
 		return new RestResult<Page<WechatUser>>(users);
 	}
-
+	/**
+	 * [管理后台]保存当前店铺端体验金比例
+	 * @param store
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(path = "/expMoneyRateSetting", method = RequestMethod.POST)
-	public RestResult<Store> updateExperienceMoneyRateSetting(@RequestBody Store store, HttpServletRequest request) {
-		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		store.setUser(user);
-		storeService.create(store);
-		return new RestResult<Store>();
+	public RestResult<?> updateExperienceMoneyRateSetting(@RequestBody List<StoreCatalogExperienceMoneyRateSetting> settings) {
+		storeCatalogExperienceMoneyRateSettingService.save(settings);
+		return new RestResult<>();
 	}
-
+	/**
+	 * [管理后台]获取当前店铺端体验金比例
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(path = "/expMoneyRateSetting/{id}", method = RequestMethod.GET)
 	public RestResult<List<StoreCatalogExperienceMoneyRateSetting>> loadExperienceMoneyRateSetting(
 			@PathVariable Long id) {

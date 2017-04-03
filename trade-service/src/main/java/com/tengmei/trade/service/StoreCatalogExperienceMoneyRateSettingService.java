@@ -5,6 +5,6 @@ import java.util.List;
 import com.tengmei.trade.domain.StoreCatalogExperienceMoneyRateSetting;
 
 public interface StoreCatalogExperienceMoneyRateSettingService {
-	public void save(StoreCatalogExperienceMoneyRateSetting setting);
+	public void save(List<StoreCatalogExperienceMoneyRateSetting> settings);
 	public List<StoreCatalogExperienceMoneyRateSetting> findByStore(Long storeID);
 }
