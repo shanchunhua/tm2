@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tengmei.trade.domain.CustomerLevel;
 import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.StoreCatalogExperienceMoneyRateSetting;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.rest.vo.StoreSummary;
@@ -27,6 +28,7 @@ import com.tengmei.trade.service.HairStyleService;
 import com.tengmei.trade.service.ProductOrderService;
 import com.tengmei.trade.service.ProductService;
 import com.tengmei.trade.service.StaffService;
+import com.tengmei.trade.service.StoreCatalogExperienceMoneyRateSettingService;
 import com.tengmei.trade.service.StoreService;
 import com.tengmei.trade.service.SupplierStoreService;
 import com.tengmei.trade.service.WechatUserService;
@@ -48,6 +50,8 @@ public class StoreController {
 	private HairStyleService hairStyleService;
 	@Autowired
 	SupplierStoreService supplierStoreService;
+	@Autowired
+	StoreCatalogExperienceMoneyRateSettingService storeCatalogExperienceMoneyRateSettingService;
 
 	/**
 	 * 创建店铺申请
@@ -68,7 +72,7 @@ public class StoreController {
 		storeService.update(store);
 		return new RestResult<Store>();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	public RestResult<List<Store>> findAll() {
 		List<Store> stores = storeService.findAll();
@@ -171,4 +175,10 @@ public class StoreController {
 		return new RestResult<Store>();
 	}
 
+	@RequestMapping(path = "/expMoneyRateSetting/{id}", method = RequestMethod.GET)
+	public RestResult<List<StoreCatalogExperienceMoneyRateSetting>> loadExperienceMoneyRateSetting(
+			@PathVariable Long id) {
+		return new RestResult<List<StoreCatalogExperienceMoneyRateSetting>>(
+				storeCatalogExperienceMoneyRateSettingService.findByStore(id));
+	}
 }
