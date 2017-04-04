@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tengmei.common.AppException;
 import com.tengmei.trade.domain.Platform;
 import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.StoreMessageTemplate;
 import com.tengmei.trade.repository.PlatformRepository;
+import com.tengmei.trade.repository.StoreMessageTemplateRepository;
 import com.tengmei.trade.repository.StoreRepository;
 import com.tengmei.wechat.service.AccessTokenManager;
 import com.tengmei.wechat.service.PlatformService;
@@ -25,6 +28,9 @@ import com.tengmei.wechat.util.HttpTemplate;
 import com.tengmei.wechat.util.StringObjectConverter;
 import com.tengmei.wechat.vo.AccessTokenReteriver;
 import com.tengmei.wechat.vo.CachedObject;
+import com.tengmei.wechat.vo.CreateMenuRequest;
+import com.tengmei.wechat.vo.MenuCreateResponse;
+import com.tengmei.wechat.vo.MenuItem;
 
 @Service
 public class PlatformServiceImpl implements PlatformService {
@@ -46,6 +52,8 @@ public class PlatformServiceImpl implements PlatformService {
 
 	@Autowired
 	private StoreRepository storeRepository;
+	@Autowired
+	private StoreMessageTemplateRepository storeMessageTemplateRepository;
 
 	public void setComponentVerifyTicket(String componentVerifyTicket) {
 		Platform platform = platformRepository.findOne(1L);
@@ -137,6 +145,9 @@ public class PlatformServiceImpl implements PlatformService {
 			store.setAppid(appid);
 			store.setAccessToken(accessToken);
 			store.setRefreshToken(refreshToken);
+			createMenu(store.getId());
+			createMessageTemplate(store.getId(), "TM00015");
+//			createMessageTemplate(store.getId(), "OPENTM207777500");
 			storeRepository.save(store);
 		} catch (JsonParseException e) {
 			logger.error(e.getMessage(), e);
@@ -150,4 +161,92 @@ public class PlatformServiceImpl implements PlatformService {
 		}
 	}
 
+	public void createMenu(Long storeId) {
+		Store store = storeRepository.findOne(storeId);
+		String appid = store.getAppid();
+		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + store.getAccessToken();
+		CreateMenuRequest request = new CreateMenuRequest();
+		MenuItem item = new MenuItem();
+		item.setName("消费指南");
+		item.setUrl(url);
+		request.getButton().add(item);
+		item = new MenuItem();
+		item.setName("我的业绩");
+		item.setUrl(url);
+		request.getButton().add(item);
+		item = new MenuItem();
+		item.setName("我要推广");
+		item.setUrl(url);
+		request.getButton().add(item);
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			System.out.println(objectMapper.writeValueAsString(request));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		MenuCreateResponse response = restTemplate.postForObject(url, request, MenuCreateResponse.class);
+		logger.debug(response.getErrcode());
+		logger.debug(response.getErrmsg());
+
+	}
+
+	public void removeMenu(Long storeId) {
+		Store store = storeRepository.findOne(storeId);
+		String url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=" + store.getAccessToken();
+		HttpTemplate httpTemplate = new HttpTemplate();
+		httpTemplate.get(url);
+	}
+
+	public String createMessageTemplate(Long storeId, String templateId) {
+		Store store = storeRepository.findOne(storeId);
+		StoreMessageTemplate storeMessageTemplate = storeMessageTemplateRepository.findByMessageTypeAndStore(templateId,
+				store);
+		if (storeMessageTemplate == null) {
+			storeMessageTemplate = new StoreMessageTemplate();
+			storeMessageTemplate.setStore(store);
+			storeMessageTemplate.setMessageType(templateId);
+			setIndustry(store.getAccessToken());
+			String url = "https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token="
+					+ store.getAccessToken();
+			HttpTemplate httpTemplate = new HttpTemplate();
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("template_id_short", templateId);
+			Map<String, String> results = httpTemplate.post(url, StringObjectConverter.convertObject2JSON(params));
+
+			String tplid = results.get("template_id");
+			storeMessageTemplate.setTemplateId(tplid);
+			storeMessageTemplateRepository.save(storeMessageTemplate);
+			return tplid;
+		} else {
+			return storeMessageTemplate.getTemplateId();
+		}
+
+	}
+
+	public void setIndustry(String accessToken) {
+		String url = "https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token=" + accessToken;
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("industry_id1", "1");
+		data.put("industry_id2", "23");
+		HttpTemplate template = new HttpTemplate();
+		// 因为只允许调用一次，所以再次调用会出异常，所以catch住
+		try {
+			template.post(url, StringObjectConverter.convertObject2JSON(data));
+		} catch (Exception e) {
+			logger.info("异常被捕获，继续执行");
+			logger.error(e.getMessage());
+		}
+	}
+	public void sendTemplateMessage(Long storeId, String message) {
+		Store store = storeRepository.findOne(storeId);
+		try {
+			String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="
+					+ store.getAccessToken();
+			HttpTemplate template = new HttpTemplate();
+			Map<String, String> result = template.post(url, message);
+		} catch (Exception e) {
+			logger.info("发送模板消息异常被捕获，继续执行");
+			logger.error(e.getMessage());
+		}
+	}
 }
