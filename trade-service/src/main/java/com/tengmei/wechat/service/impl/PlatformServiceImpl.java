@@ -27,6 +27,7 @@ public class PlatformServiceImpl implements PlatformService {
 	private PlatformRepository platformRepository;
 	@Autowired
 	private RestTemplate restTemplate;
+	@Autowired
 	private AccessTokenManager accessTokenManager;
 	private static final Logger logger = LoggerFactory.getLogger(PlatformServiceImpl.class);
 	@Value("${platform.appSecret}")
@@ -43,6 +44,8 @@ public class PlatformServiceImpl implements PlatformService {
 			platform.setId(1L);
 		}
 		platform.setComponentVerifyTicket(componentVerifyTicket);
+		String componentAccessToken=this.getComponentAccessToken();
+		platform.setComponentAccessToken(componentAccessToken);
 		platformRepository.save(platform);
 		this.componentVerifyTicket = componentVerifyTicket;
 	}

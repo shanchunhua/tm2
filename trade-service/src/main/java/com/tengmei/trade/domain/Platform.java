@@ -6,6 +6,16 @@ public class Platform extends BaseEntity {
 	private String componentVerifyTicket;
 
 	private String authCode;
+	
+	private String componentAccessToken;
+	public String getComponentAccessToken() {
+		return componentAccessToken;
+	}
+
+	public void setComponentAccessToken(String componentAccessToken) {
+		this.componentAccessToken = componentAccessToken;
+	}
+
 	/**
 	 * 每天重置的计数器，用于发红包
 	 */
