@@ -44,6 +44,16 @@ public class Store extends BaseEntity implements Serializable {
 	private String appid;
 
 	private String accessToken;
+	
+	private String refreshToken;
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+
 	public String getAppid() {
 		return appid;
 	}

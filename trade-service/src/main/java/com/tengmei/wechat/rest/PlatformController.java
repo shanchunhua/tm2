@@ -31,6 +31,8 @@ public class PlatformController {
 	StoreService storeService;
 	@Value("${platform.appID}")
 	private String platformAppid;
+	@Value("${platform.url}")
+	private String platformUrl;
 
 	/**
 	 * 此方法用于接收微信服务器没10分钟发送过来的component verify
@@ -71,7 +73,7 @@ public class PlatformController {
 	public ModelAndView redirectToAuthrizedUrl(@PathVariable Long id) {
 		String url = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=" + platformAppid
 				+ "&pre_auth_code=" + platformService.getPreAuthCode(true)
-				+ "&redirect_uri=http://www.tengmei360.com/skeleton-web/authorize/authcode?id=" + id;
+				+ "&redirect_uri="+platformUrl+"wechat/authorize/authcode?id=" + id;
 		return new ModelAndView("redirect:" + url);
 
 	}
