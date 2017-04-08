@@ -43,6 +43,7 @@ public class FpsEntryController {
 			HttpServletRequest request) throws IOException {
 		String path = (String) request.getSession().getAttribute("path");
 		logger.debug(path);
+		//根据code去那openid
 		String openid = basicService.getOAuth2AccessToken(code, null).getOpenid();
 		UserInfo userInfo = userService.getUserInfo(openid, null);
 

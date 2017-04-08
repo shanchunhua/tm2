@@ -23,10 +23,10 @@ public class BasicServiceImpl implements BasicService {
 	@Autowired
 	RestTemplate restTemplate;
 
-	@Value("${wechat.appID}")
+	@Value("${wechat.fps.appID}")
 	String appID;
 
-	@Value("${wechat.appSecret}")
+	@Value("${wechat.fps.appSecret}")
 	String appSecret;
 
 	private AccessToken accessToken;

@@ -56,7 +56,7 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 			if (path.indexOf("oauth2") < 0) {
 				request.getSession().setAttribute("path", path);
 			}
-
+			//用户授权，获取openid
 			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appID + "&redirect_uri="
 					+ fpsUrl + "wechat/oauth2&response_type=code&scope=snsapi_base&state=" + "STATE"
 					+ "#wechat_redirect";

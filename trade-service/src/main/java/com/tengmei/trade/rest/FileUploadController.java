@@ -30,12 +30,12 @@ public class FileUploadController {
 				e.printStackTrace();
 			}
 		}
-		try {
-			Thread.sleep(30000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(30000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return new RestResult(fileName);
 	}
 }

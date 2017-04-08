@@ -26,6 +26,7 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public void create(Supplier entity) {
 		entity.getUser().setType(UserType.SUPPLIER);
+		entity.getWallet().setSupplier(entity);
 		wechatUserRepository.save(entity.getUser());
 		supplierRepository.save(entity);
 	}

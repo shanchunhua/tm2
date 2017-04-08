@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tengmei.wechat.service.MenuService;
+import com.tengmei.wechat.vo.CreateMenuRequest;
 import com.tengmei.wechat.vo.MenuCreateResponse;
 
 @Service
@@ -17,11 +20,6 @@ public class MenuServiceImpl implements MenuService {
 	@Autowired
 	RestTemplate restTemplate;
 	private static final Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
-
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-
 	private String accessToken;
 
 	public MenuServiceImpl(String accessToken) {
@@ -33,10 +31,20 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public void createMenu(String menu) {
+	public MenuCreateResponse createMenu(CreateMenuRequest request) {
 		logger.debug(accessToken);
-		String url = " https://api.weixin.qq.com/cgi-bin/menu/create?access_token={token}";
-		MenuCreateResponse response = restTemplate.postForObject(url, menu, MenuCreateResponse.class, accessToken);
+		String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken;
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			System.out.println(objectMapper.writeValueAsString(request));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		MenuCreateResponse response = restTemplate.postForObject(url, request, MenuCreateResponse.class);
+		logger.debug(response.getErrcode());
+		logger.debug(response.getErrmsg());
+		return response;
+
 	}
 
 }

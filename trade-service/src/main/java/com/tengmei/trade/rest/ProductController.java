@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tengmei.trade.domain.Product;
 import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.Supplier;
+import com.tengmei.trade.domain.UserType;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.ProductService;
 import com.tengmei.trade.service.StoreService;
+import com.tengmei.trade.service.SupplierService;
 import com.tengmei.trade.service.SupplierStoreService;
 
 @RestController
@@ -29,17 +32,23 @@ public class ProductController {
 	private StoreService storeService;
 	@Autowired
 	private SupplierStoreService supplierStoreService;
+	@Autowired
+	private SupplierService supplierService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public RestResult<List<Product>> getProducts(HttpServletRequest request) {
-
-		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
-		Store store = storeService.findStoreByOwner(user);
-		List<Product> products = productService.findBySuppliers(supplierStoreService.findSuppliersByStore(store));
-
 		RestResult<List<Product>> result = new RestResult<>();
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		if (user.getType().equals(UserType.STORE_OWNER)) {// 如果是店家
+			Store store = storeService.findStoreByOwner(user);
+			List<Product> products = productService.findBySuppliers(supplierStoreService.findSuppliersByStore(store));
+			result.setData(products);
+		} else {// 如果是发品商
+			Supplier supplier = supplierService.findSupplier(user);
+			List<Product> products = productService.findBySupplier(supplier);
+			result.setData(products);
+		}
 
-		result.setData(products);
 		return result;
 	}
 

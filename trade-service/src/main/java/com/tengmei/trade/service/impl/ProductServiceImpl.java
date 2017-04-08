@@ -13,6 +13,7 @@ import com.tengmei.trade.domain.ProductCatalog;
 import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.repository.ProductCatalogRepository;
 import com.tengmei.trade.repository.ProductRepository;
+import com.tengmei.trade.repository.SupplierRepository;
 import com.tengmei.trade.service.ProductService;
 
 @Service
@@ -23,6 +24,8 @@ public class ProductServiceImpl implements ProductService {
 	private ProductRepository productRepository;
 	@Autowired
 	private ProductCatalogRepository productCatalogRepository;
+	@Autowired
+	private SupplierRepository supplierRepository;
 
 	@Override
 	public List<Product> findBySupplier(Supplier supplier) {
@@ -57,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void save(Product product) {
 		product.setCatalog(productCatalogRepository.findOne(product.getCatalog().getId()));
+		product.setSupplier(supplierRepository.findOne(product.getSupplier().getId()));
 		productRepository.save(product);
 
 	}
