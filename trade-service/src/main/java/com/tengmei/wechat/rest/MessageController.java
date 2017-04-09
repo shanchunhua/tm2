@@ -10,7 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.Supplier;
 import com.tengmei.trade.domain.WechatUser;
+import com.tengmei.trade.service.StoreService;
+import com.tengmei.trade.service.SupplierService;
+import com.tengmei.trade.service.SupplierStoreService;
 import com.tengmei.trade.service.WechatUserService;
 import com.tengmei.wechat.service.UserService;
 import com.tengmei.wechat.util.XmlUtil;
@@ -27,6 +32,12 @@ public class MessageController {
 	private UserService userService;
 	@Autowired
 	private WechatUserService wechatUserService;
+	@Autowired
+	private StoreService storeService;
+	@Autowired
+	private SupplierService supplierService;
+	@Autowired
+	private SupplierStoreService supplierStoreService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String verify(@RequestParam String signature, @RequestParam String timestamp, @RequestParam String nonce,
@@ -46,7 +57,28 @@ public class MessageController {
 		if (wechatMessage.getEvent() != null && wechatMessage.getEvent().equals("subscribe")) {
 			onSubscribe(wechatMessage);
 		}
+		if (wechatMessage.getEvent() != null && wechatMessage.getEvent().equals("SCAN")) {
+			onScan(wechatMessage);
+		}
 		return message;
+	}
+
+	private void onScan(WechatMessage wechatMessage) {
+		// store owner open id
+		String openid = wechatMessage.getFromUserName();
+		// supplier id
+		String eventKey = wechatMessage.getEventKey();
+
+		WechatUser wechatUser = wechatUserService.findByOpenid(openid);
+		// TODO 用户不存在
+		if (wechatUser == null || wechatUser.getType() == null) {
+
+		} else {
+			Store store = storeService.findStoreByOwner(wechatUser);
+			Supplier supplier = supplierService.findSupplier(wechatUserService.findById(Long.valueOf(eventKey)));
+			supplierStoreService.create(supplier,store);
+		}
+
 	}
 
 	protected void onSubscribe(WechatMessage wechatMessage) {
@@ -56,7 +88,9 @@ public class MessageController {
 
 		if (user == null) {
 			user = new WechatUser();
-			String pid = wechatMessage.getEventKey();
+			String eventKey = wechatMessage.getEventKey();
+			String pid = eventKey.substring(eventKey.indexOf("_") + 1);
+			logger.debug(pid);
 			if (pid != null) {
 				WechatUser parent = wechatUserService.findById(Long.valueOf(pid));
 				user.setParent(parent);

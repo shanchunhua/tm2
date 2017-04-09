@@ -49,4 +49,12 @@ public class SupplierStoreServiceImpl implements SupplierStoreService {
 		return supplierStoreRepository.countBySupplier(supplier);
 	}
 
+	@Override
+	public void create(Supplier supplier, Store store) {
+		SupplierStore supplierStore = new SupplierStore();
+		supplierStore.setSupplier(supplier);
+		supplierStore.setStore(store);
+		supplierStoreRepository.save(supplierStore);
+	}
+
 }

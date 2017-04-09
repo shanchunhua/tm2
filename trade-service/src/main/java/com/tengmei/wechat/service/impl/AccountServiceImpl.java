@@ -21,9 +21,10 @@ public class AccountServiceImpl implements AccountService {
 	BasicService basicService;
 	@Override
 	public QRCodeTicketResponse createQRCodeTicket(String scene) {
+		logger.debug(scene);
 		String url="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={token}";
 		Map<String,Object> input=new HashMap<>();
-		input.put("action_name", "QR_LIMIT_SCENE");
+		input.put("action_name", "QR_LIMIT_STR_SCENE");
 		Map<String,Object> sceneMap=new HashMap<>();
 		Map<String,Object> sceneData=new HashMap<>();
 		sceneData.put("scene_str", scene);

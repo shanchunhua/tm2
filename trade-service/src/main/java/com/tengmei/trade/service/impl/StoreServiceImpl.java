@@ -30,6 +30,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public void create(Store store) {
 		store.getUser().setType(UserType.STORE_OWNER);
+		store.getWallet().setStore(store);
 		wechatUserRepository.save(store.getUser());
 		storeRepository.save(store);
 	}

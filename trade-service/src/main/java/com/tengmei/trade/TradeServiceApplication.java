@@ -41,7 +41,7 @@ public class TradeServiceApplication {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
 				registry.addInterceptor(wechatOAuth2Interceptor).addPathPatterns("/productindex")
-						.addPathPatterns("/main")
+						.addPathPatterns("/main").addPathPatterns("/qrcode")
 						.excludePathPatterns("/wechat/**", "/static/**");
 				super.addInterceptors(registry);
 			}

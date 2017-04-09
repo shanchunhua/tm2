@@ -14,4 +14,6 @@ public interface SupplierStoreService {
 
 	public Integer countBySupplier(Supplier supplier);
 
+	public void create(Supplier supplier, Store store);
+
 }

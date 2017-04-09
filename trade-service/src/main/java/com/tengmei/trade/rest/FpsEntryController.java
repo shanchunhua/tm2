@@ -43,7 +43,7 @@ public class FpsEntryController {
 			HttpServletRequest request) throws IOException {
 		String path = (String) request.getSession().getAttribute("path");
 		logger.debug(path);
-		//根据code去那openid
+		// 根据code去那openid
 		String openid = basicService.getOAuth2AccessToken(code, null).getOpenid();
 		UserInfo userInfo = userService.getUserInfo(openid, null);
 
@@ -83,6 +83,12 @@ public class FpsEntryController {
 		} else {
 			return "redirect:" + fpsUrl + "index.html#!storeindex";
 		}
+	}
+
+	@RequestMapping("/qrcode")
+	public String qrcode(HttpServletRequest request) throws IOException {
+		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		return "redirect:" + fpsUrl + "index.html#!qrcode";
 	}
 
 	@RequestMapping("/login/{menu}")
