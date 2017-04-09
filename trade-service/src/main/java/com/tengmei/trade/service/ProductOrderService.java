@@ -56,4 +56,6 @@ public interface ProductOrderService {
 	public List<OrderSummaryByStore> getOrderSummaryByStores(List<Store> stores);
 
 	public ProductOrder findById(Long id);
+
+	public ProductOrder findByOrderNo(String orderNo);
 }

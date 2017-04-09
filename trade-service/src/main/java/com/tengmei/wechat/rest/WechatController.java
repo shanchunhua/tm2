@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +24,13 @@ import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.WechatUser;
 import com.tengmei.trade.service.CustomerOrderService;
 import com.tengmei.trade.service.ProductOrderService;
+import com.tengmei.wechat.service.AccessTokenService;
 import com.tengmei.wechat.service.BasicService;
+import com.tengmei.wechat.service.JSAPIService;
 import com.tengmei.wechat.service.PaymentService;
 import com.tengmei.wechat.service.SignatureService;
 import com.tengmei.wechat.util.RandomStringGenerator;
+import com.tengmei.wechat.vo.AccessToken;
 
 @RestController
 @RequestMapping("/rest/wechat")
@@ -34,6 +38,8 @@ public class WechatController {
 	private static final Logger logger = LoggerFactory.getLogger(WechatController.class);
 	@Value("${wechat.payment.appid}")
 	private String appID;
+	@Value("${wechat.payment.appSecret}")
+	private String appSecret;
 	@Value("${wechat.payment.mchid}")
 	private String mchid;
 	@Autowired
@@ -46,6 +52,10 @@ public class WechatController {
 	BasicService basicService;
 	@Autowired
 	private CustomerOrderService customerOrderService;
+	@Autowired
+	AccessTokenService accessTokenService;
+	@Autowired
+	BeanFactory beanFactory;
 
 	/**
 	 * 
@@ -58,15 +68,18 @@ public class WechatController {
 	@RequestMapping("/payment/unifiedorder")
 	public Map<String, Object> unifiedOrder(@RequestParam Long id, @RequestParam(defaultValue = "1") Integer type,
 			HttpServletRequest httpServletRequest) {
+		String host = httpServletRequest.getServerName();
+		logger.debug(host);
 		WechatUser user = (WechatUser) httpServletRequest.getSession().getAttribute("user");
+		WechatUser paymentUser = (WechatUser) httpServletRequest.getSession().getAttribute("paymentUser");
 		Map<String, Object> request = new HashMap<String, Object>();
 		request.put("appid", appID);
 		request.put("mch_id", mchid);
 		request.put("nonce_str", RandomStringGenerator.getRandomStringByLength(32));
 		request.put("spbill_create_ip", "127.0.0.1");
-		request.put("notify_url", "https://www.tengmei360.com/wechat/payment/notify");
+		request.put("notify_url", "http://" + host + "/wechat/payment/notify");
 		request.put("trade_type", "JSAPI");
-		request.put("openid", user.getOpenid());
+		request.put("openid", paymentUser.getOpenid());
 
 		if (type == 1) {
 			ProductOrder order = productOrderService.findById(id);
@@ -100,11 +113,14 @@ public class WechatController {
 	}
 
 	@RequestMapping("/payment/config")
-	public Map<String, String> config(HttpServletRequest httpServletRequest) {
+	public Map<String, String> config(HttpServletRequest request) {
+		logger.debug(request.getServerName());
 		String nonceStr = RandomStringGenerator.getRandomStringByLength(32);
 		String timestamp = Long.toString(System.currentTimeMillis() / 1000);
-		String jsapiTicket = basicService.getJsApiTicket();
-		String url = "http://www.tengmei360.com/index.html";
+		String accessToken = accessTokenService.getAccessToken(appID, appSecret);
+		JSAPIService jsapiService = beanFactory.getBean(JSAPIService.class, accessToken);
+		String jsapiTicket = jsapiService.getJsApiTicket();
+		String url = "http://fps.baizhuanmao.com/index.html";
 		String string1 = "jsapi_ticket=" + jsapiTicket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url="
 				+ url;
 		logger.debug(string1);

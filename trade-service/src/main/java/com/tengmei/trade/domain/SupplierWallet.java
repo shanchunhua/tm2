@@ -23,18 +23,11 @@ public class SupplierWallet extends CommonEntity {
 	@Id
 	@GeneratedValue
 	private Long id;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Supplier getSupplier() {
-		return supplier;
-	}
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
-	}
+	/**
+	 * left是关键字，改成leftAmount
+	 */
+	@Column(precision = 10, scale = 2,name="leftAmount")
+	private BigDecimal left=new BigDecimal(0);
 	@JoinColumn(name = "ID")
 	@OneToOne
 	@MapsId
@@ -44,30 +37,37 @@ public class SupplierWallet extends CommonEntity {
 	private BigDecimal total=new BigDecimal(0);
 	@Column(precision = 10, scale = 2)
 	private BigDecimal withdrawed=new BigDecimal(0);
-	/**
-	 * left是关键字，改成leftAmount
-	 */
-	@Column(precision = 10, scale = 2,name="leftAmount")
-	private BigDecimal left=new BigDecimal(0);
-	
-	
-	public BigDecimal getTotal() {
-		return total;
-	}
-	public void setTotal(BigDecimal total) {
-		this.total = total;
-	}
-	public BigDecimal getWithdrawed() {
-		return withdrawed;
-	}
-	public void setWithdrawed(BigDecimal withdrawed) {
-		this.withdrawed = withdrawed;
+	public Long getId() {
+		return id;
 	}
 	public BigDecimal getLeft() {
 		return left;
 	}
+	public Supplier getSupplier() {
+		return supplier;
+	}
+	public BigDecimal getTotal() {
+		return total;
+	}
+	
+	
+	public BigDecimal getWithdrawed() {
+		return withdrawed;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public void setLeft(BigDecimal left) {
 		this.left = left;
+	}
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+	public void setWithdrawed(BigDecimal withdrawed) {
+		this.withdrawed = withdrawed;
 	}
 
 }

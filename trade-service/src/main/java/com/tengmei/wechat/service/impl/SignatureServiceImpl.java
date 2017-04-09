@@ -55,7 +55,7 @@ public class SignatureServiceImpl implements SignatureService {
 	public String getSign(Map<String, Object> map) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
-			if (!entry.getValue().equals(null)) {
+			if (entry.getValue()!=null) {
 				list.add(entry.getKey() + "=" + entry.getValue() + "&");
 			}
 		}

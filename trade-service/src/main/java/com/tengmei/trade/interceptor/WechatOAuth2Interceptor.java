@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
@@ -31,36 +32,40 @@ public class WechatOAuth2Interceptor extends HandlerInterceptorAdapter {
 	private WechatUserService wechatUserService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	Environment env;
+
+	private String getFpsOAuth2Url(String host) {
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + env.getProperty("wechat.fps.appID")
+				+ "&redirect_uri=" + "http://" + host + "/wechat/oauth2/fps&response_type=code&scope=snsapi_base&state="
+				+ "STATE" + "#wechat_redirect";
+		return url;
+	}
+
+	private String getPaymentOAuth2Url(String host) {
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+				+ env.getProperty("wechat.payment.appid") + "&redirect_uri=" + "http://" + host
+				+ "/wechat/oauth2/payment&response_type=code&scope=snsapi_base&state=" + "STATE" + "#wechat_redirect";
+		return url;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		/*
-		 * 
-		 * // test only // store owner String openid =
-		 * "oVxv2wGJKgJuQ7XIsTGhPeMN1Cu0"; // supplier // String
-		 * openid="supplier"; WechatUser testUser =
-		 * wechatUserService.findByOpenid(openid); UserInfo userInfo =
-		 * userService.getUserInfo(openid, null);
-		 * testUser.setUserInfo(userInfo);
-		 * request.getSession().setAttribute("user", testUser);
-		 * request.getSession().setAttribute("store", testUser.getStore()); //
-		 * test end if (handler instanceof ResourceHttpRequestHandler) {
-		 * logger.debug(request.getRequestURL().toString()); } Object user =
-		 * request.getSession().getAttribute("user");
-		 */
 		WechatUser user = (WechatUser) request.getSession().getAttribute("user");
+		String host = request.getServerName();
+		logger.debug("host:" + host);
+
 		if (user == null) {
 			String path = request.getRequestURI();
 			// 记录当前路径，以确保登录后返回到正确的地址
 			if (path.indexOf("oauth2") < 0) {
 				request.getSession().setAttribute("path", path);
 			}
-			//用户授权，获取openid
-			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appID + "&redirect_uri="
-					+ fpsUrl + "wechat/oauth2&response_type=code&scope=snsapi_base&state=" + "STATE"
-					+ "#wechat_redirect";
-
+			// 用户授权，获取openid
+			String url = getPaymentOAuth2Url(host);
+			// TODO 此处需要识别是平台还是发品商，暂时只有发品商
+			request.getSession().setAttribute("nextOAuth2Url", getFpsOAuth2Url(host));
 			response.sendRedirect(url);
 			return false;
 		} else {

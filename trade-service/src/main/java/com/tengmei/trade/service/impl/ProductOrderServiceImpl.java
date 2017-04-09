@@ -17,10 +17,14 @@ import com.tengmei.trade.domain.LogisticsStatus;
 import com.tengmei.trade.domain.PaymentStatus;
 import com.tengmei.trade.domain.ProductOrder;
 import com.tengmei.trade.domain.Store;
+import com.tengmei.trade.domain.StoreWallet;
 import com.tengmei.trade.domain.Supplier;
+import com.tengmei.trade.domain.SupplierWallet;
 import com.tengmei.trade.repository.ProductOrderRepository;
 import com.tengmei.trade.repository.ProductRepository;
 import com.tengmei.trade.repository.StoreRepository;
+import com.tengmei.trade.repository.StoreWalletRepository;
+import com.tengmei.trade.repository.SupplierWalletRepository;
 import com.tengmei.trade.service.ProductOrderService;
 
 @Service
@@ -33,6 +37,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	private ProductRepository productRepository;
 	@Autowired
 	private StoreRepository storeRepository;
+	@Autowired
+	SupplierWalletRepository supplierWalletRepository;
+	@Autowired
+	StoreWalletRepository storeWalletRepository;
 
 	/**
 	 * 订单创建
@@ -45,7 +53,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 		order.setExperienceMoneyRate(order.getProduct().getCatalog().getExperienceMoneyRate());
 		order.setTotal(order.getPrice().multiply(new BigDecimal(order.getQuantity())));
 		order.setExperienceMoney(order.getExperienceMoneyRate().multiply(order.getPrice())
-				.multiply(new BigDecimal(order.getQuantity())));
+				.multiply(new BigDecimal(order.getQuantity())).divide(new BigDecimal(100)));
 		productOrderRepository.save(order);
 	}
 
@@ -57,6 +65,17 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 		order = productOrderRepository.findOne(order.getId());
 		if (order.getPaymentStatus() == PaymentStatus.NOT_PAID) {
 			order.setPaymentStatus(PaymentStatus.PAID);
+			// 供应商钱包加上这部分金额
+			SupplierWallet supplierWallet = order.getProduct().getSupplier().getWallet();
+			supplierWallet
+					.setTotal(supplierWallet.getTotal().add(order.getTotal()).subtract(order.getExperienceMoney()));
+			supplierWallet.setLeft(supplierWallet.getLeft().add(order.getTotal()).subtract(order.getExperienceMoney()));
+			supplierWalletRepository.save(supplierWallet);
+			// 店铺钱包加上体验金
+			StoreWallet storeWallet = order.getStore().getWallet();
+			storeWallet.setTotalExperienceMoney(storeWallet.getTotalExperienceMoney().add(order.getExperienceMoney()));
+			storeWallet.setLeftExperienceMoney(storeWallet.getLeftExperienceMoney().add(order.getExperienceMoney()));
+			storeWalletRepository.save(storeWallet);
 			productOrderRepository.save(order);
 		}
 	}
@@ -161,5 +180,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 	@Override
 	public ProductOrder findById(Long id) {
 		return productOrderRepository.findOne(id);
+	}
+
+	@Override
+	public ProductOrder findByOrderNo(String orderNo) {
+		return productOrderRepository.findByOrderNo(orderNo);
 	}
 }

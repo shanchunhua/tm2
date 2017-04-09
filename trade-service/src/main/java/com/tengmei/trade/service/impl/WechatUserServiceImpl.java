@@ -21,6 +21,9 @@ public class WechatUserServiceImpl implements WechatUserService {
 	@Override
 	public void create(WechatUser entity) {
 		entity.getWallet().setUser(entity);
+		if (entity.getUnionid() == null) {
+			entity.setUnionid(System.nanoTime() + "");
+		}
 		wechatUserRepository.save(entity);
 	}
 
@@ -35,8 +38,8 @@ public class WechatUserServiceImpl implements WechatUserService {
 	}
 
 	@Override
-	public Page<WechatUser> findUserRelations(WechatUser user,Pageable pageable) {
-		return wechatUserRepository.findByParent(user,pageable);
+	public Page<WechatUser> findUserRelations(WechatUser user, Pageable pageable) {
+		return wechatUserRepository.findByParent(user, pageable);
 	}
 
 }

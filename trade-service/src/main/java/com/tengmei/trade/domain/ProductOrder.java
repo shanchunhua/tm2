@@ -18,7 +18,7 @@ public class ProductOrder extends BaseEntity {
 	private BigDecimal experienceMoneyRate;
 	private LogisticsStatus logisticsStatus = LogisticsStatus.UNFULFILLED;
 	@Column
-	private String orderNo = System.nanoTime() + "";
+	private String orderNo ="FPS_"+ System.nanoTime() + "";
 	private PaymentStatus paymentStatus = PaymentStatus.NOT_PAID;
 	
 	@Column(precision = 10, scale = 2)

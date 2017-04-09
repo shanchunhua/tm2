@@ -28,4 +28,6 @@ public interface ProductOrderRepository extends JpaRepository<ProductOrder, Long
 	@Query("select sum(o.total),sum(o.experienceMoney) from ProductOrder o where o.store=?1 and o.paymentStatus=com.tengmei.trade.domain.PaymentStatus.PAID")
 	public Object totalByStore(Store store);
 
+	public ProductOrder findByOrderNo(String orderNo);
+
 }
