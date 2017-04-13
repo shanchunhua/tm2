@@ -10,4 +10,6 @@ public interface ProductCatalogService {
 	 * @return
 	 */
 	List<ProductCatalog> getAll();
+
+	ProductCatalog findById(Long id);
 }
